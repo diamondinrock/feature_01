@@ -36,3 +36,6 @@ def wechat(request):
         request,
         'appuser/index.html',
     )
+
+def allteams(request):
+	return render(request, 'appuser/allteams.html', context=None)
