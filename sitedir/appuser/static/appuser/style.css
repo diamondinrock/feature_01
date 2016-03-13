@@ -1,0 +1,126 @@
+body h1 {
+	font-size: 1.2em;
+}
+
+body h2 {
+	font-size: 1.15em;
+}
+
+body p {
+	font-size: 1em;
+}
+
+body a {
+	text-decoration: none !important;
+	color: #000 !important;
+}
+
+.header .carousel-inner{
+	width:100%;
+	max-height: 200px !important;
+}
+
+.header .carousel-inner img {
+	width: 100%;
+}
+ 
+.header .glyphicon {
+	color: #FFF;
+}
+
+.nav {
+	margin: 0px 10px;
+	line-height: 50px;
+}
+
+.nav .left {
+	float: left;
+}
+
+.nav .right {
+	float: right;
+}
+
+.nav h1 {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	line-height: 50px;
+}
+
+.groups {
+	display: flex;
+	justify-content: space-between;
+}
+
+.groups .btn-circle {
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	padding: 15px 0;
+	line-height: 1.42;
+	border-radius: 25px;
+}
+
+.groups p {
+	padding-top: 5px;
+}
+
+/*.groups i {
+	color: #FFF;
+}*/
+
+.divider {
+	border-top: 1px solid #e2e2e2;
+}
+
+.tasks {
+	margin-bottom: 110px;
+}
+
+.task-preview {
+	margin: 0px 30px;
+}
+
+.task-footer {
+	display: flex;
+	padding: 10px 0px;
+	color: #A0A0A0;
+}
+
+.task-footer p {
+	flex: 1;
+}
+
+/*Source: http://stackoverflow.com/questions/6127621/keeping-footer-at-the-bottom-of-window-on-site-that-scrolls-horizontal*/
+.footer {
+ 	height: 100px;
+ 	line-height: 50px;
+	width: 100%;
+	background-color: #EEE9E9;
+	background-image: none;
+	background-repeat: repeat;
+	background-attachment: scroll;
+	background-position: 0% 0%;
+	position: fixed;
+	bottom: 0pt;
+	left: 0pt;
+}   
+
+.footer-contents {
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+
+.footer .glyphicon {
+	font-size: 2em;
+}
+
+.footer a {
+	flex: 1;
+}
+
+.footer p {
+  line-height: 0px;
+  padding-top: 10px;
+}

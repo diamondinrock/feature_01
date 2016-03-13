@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'sitedir.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dir',
+        'NAME': 'DiamondRough',
         'USER': 'root',
         'PASSWORD': 'Testbox1!',
         'HOST': 'localhost',
