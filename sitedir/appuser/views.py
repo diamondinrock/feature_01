@@ -2,7 +2,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.http import HttpResponse
-
+from django.http import HttpRequest
+from . import wechatuser
 
 def index(request):
 	# context = {
@@ -24,3 +25,14 @@ def index(request):
 	}
 
 	return render(request, 'appuser/index.html', context)
+
+def wechat(request):
+    """Renders the wechat page."""
+    assert isinstance(request, HttpRequest)
+    nsukey = request.GET.get('nsukey', 'none')
+    if ( nsukey == 'none'):
+        datadict = wechatuser.getUser(request)
+    return render(
+        request,
+        'appuser/index.html',
+    )
