@@ -1,0 +1,5 @@
+Marketing, Group to create programs in order to increase market share
+Engineering, Group to be responsible for technical areas
+Operations, Group to be responsbile for daily operations
+Development, Group to be responsible for implementing product
+Product, Group to be respobsible for launching and support product
