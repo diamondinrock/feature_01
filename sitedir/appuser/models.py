@@ -40,6 +40,19 @@ class DirEmploymentHistory(models.Model):
         unique_together = (('employer_name', 'employment_start_date', 'person'),)
 
 
+class DirPersonPositionAssignments(models.Model):
+    person = models.ForeignKey('DirPersonnel', models.DO_NOTHING)
+    team = models.ForeignKey('DirTeams', models.DO_NOTHING)
+    position = models.ForeignKey('DirPositions', models.DO_NOTHING)
+    creation_date = models.DateTimeField()
+    modified_date = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'DIR_Person_Position_Assignments'
+        unique_together = (('person', 'team', 'position'),)
+
+
 class DirPersonnel(models.Model):
     person_id = models.AutoField(primary_key=True)
     user_name = models.CharField(unique=True, max_length=45)
@@ -54,8 +67,8 @@ class DirPersonnel(models.Model):
     email_address = models.CharField(max_length=100, blank=True, null=True)
     goal = models.CharField(max_length=200, blank=True, null=True)
     executive_team_memeber = models.CharField(max_length=10, blank=True, null=True)
-    creation_date = models.DateTimeField(blank=True, null=True)
-    modified_date = models.DateTimeField(blank=True, null=True)
+    creation_date = models.DateTimeField()
+    modified_date = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -116,7 +129,7 @@ class DirTeams(models.Model):
     team_name = models.CharField(max_length=80)
     team_description = models.CharField(max_length=100)
     creation_date = models.DateTimeField()
-    modifed_date = models.DateTimeField()
+    modified_date = models.DateTimeField()
 
     class Meta:
         managed = False
