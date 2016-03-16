@@ -38,4 +38,5 @@ def wechat(request):
     )
 
 def allteams(request):
-	return render(request, 'appuser/allteams.html', context=None)
+	context = {'teamsjson':[json.loads(connector.getAllTeams(request))]}
+	return render(request, 'appuser/allteams.html',context)
