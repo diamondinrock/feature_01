@@ -3,6 +3,8 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 from django.http import HttpRequest
+import connector
+import json
 from . import wechatuser
 
 def index(request):
@@ -38,4 +40,5 @@ def wechat(request):
     )
 
 def allteams(request):
-	return render(request, 'appuser/allteams.html', context=None)
+	context = {'teamsjson':[json.loads(connector.getAllTeams(request))]}
+	return render(request, 'appuser/allteams.html',context)
