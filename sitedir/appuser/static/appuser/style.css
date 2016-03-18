@@ -118,8 +118,8 @@ body a {
 }   
 
 .footer-contents {
-	display: flex;
-	align-items: center;
+/*	display: flex;
+	align-items: center;*/
 	height: 100%;
 }
 
