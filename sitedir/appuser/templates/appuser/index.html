@@ -39,15 +39,15 @@
 	</div>
 
 	<div class="nav">
-		<h1 class="left">Popular Groups</h1>
+		<h1 class="left">Popular Teams</h1>
 		<a class="right" href='{% url 'allteams' %}'>
 			All <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 		</a>
 	</div>
 
-	<div class="groups container">
+	<div class="groups container h-list">
 		{% for team in teams_list %}
-			<div class="text-center">
+			<div class="text-center h-list-item">
 				<a href="#">
 					<div class="btn btn-default btn-circle">
 						<i class="fa fa-user">{{team.first_letter}}</i>
@@ -84,8 +84,8 @@
 	</div>
 
 
-	<div class="footer">
-		<div class="footer-contents text-center">
+	<div class="footer h-list">
+		<div class="footer-contents text-center h-list-item">
 			<a href="#">
 				<i class="glyphicon glyphicon-flag fa fa-user"></i>
 				<p>Execute</p>

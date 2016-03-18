@@ -15,6 +15,17 @@ body a {
 	color: #000 !important;
 }
 
+.h-list {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+}
+
+.h-list-item {
+	display: table-cell;
+	text-align: center;
+}
+
 .header .carousel-inner{
 	width:100%;
 	max-height: 200px !important;
@@ -47,10 +58,10 @@ body a {
 	line-height: 50px;
 }
 
-.groups {
+/*.groups {
 	display: flex;
 	justify-content: space-between;
-}
+}*/
 
 .groups .btn-circle {
 	width: 50px;
