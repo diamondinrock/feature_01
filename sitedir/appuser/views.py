@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 from django.http import HttpRequest
-import connector
+from . import connector
 import json
 from . import wechatuser
 
@@ -34,10 +34,7 @@ def wechat(request):
     nsukey = request.GET.get('nsukey', 'none')
     if ( nsukey == 'none'):
         datadict = wechatuser.getUser(request)
-    return render(
-        request,
-        'appuser/index.html',
-    )
+    return index(request)
 
 def allteams(request):
 	context = {'teamsjson':[json.loads(connector.getAllTeams(request))]}
