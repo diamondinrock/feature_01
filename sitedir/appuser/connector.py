@@ -1,7 +1,7 @@
 import json
 from django.http import HttpResponse
 from django.core import serializers
-from models #change depending on what models will be
+from .models import DirTeams#change depending on what models will be
 from django.utils.encoding import force_text
 from django.core.serializers.json import DjangoJSONEncoder
 
