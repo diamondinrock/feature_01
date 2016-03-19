@@ -129,6 +129,7 @@ body a {
 
 .footer a {
 	flex: 1;
+	vertical-align: middle;
 }
 
 .footer p {
