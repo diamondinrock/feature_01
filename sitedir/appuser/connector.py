@@ -18,7 +18,8 @@ def getAllTeams(request):
 
 def getTask(request, number):
     pk = 'task_id'
-    DirTasks_as_json = serializers.serialize('json', DirTasks.objects.filter(pk = number), fields=('task_name', 'task_description'))
+    DirTasks_as_json = serializers.serialize('json', DirTasks.objects.filter(pk = number), fields=('task_name', 'task_description', 'task_leader', 'task_description'))
     return DirTasks_as_json
+
 
 
