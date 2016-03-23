@@ -19,11 +19,7 @@ def index(request):
 			{'team_name':'Transportation', 'first_letter':'T'},
 			{'team_name':'Marketing', 'first_letter':'M'}
 		],
-		'tasks_list': [
-			{'task_name': 'I am a task', 'task_description': 'I am a task description', 'task_leader': 'Bernie Sanders', 'creation_date': '2016-01-01'},
-			{'task_name': 'I am also a task', 'task_description': 'I am also a task description', 'task_leader': 'Barack Obama', 'creation_date': '2016-01-02'},
-			{'task_name': 'I am the third task', 'task_description': 'I am the third task description', 'task_leader': 'Hilary Clinton', 'creation_date': '2016-01-03'}
-		]
+		'tasks_list': connector.getRecentTasks(request, 5),
 	}
 
 	return render(request, 'appuser/index.html', context)

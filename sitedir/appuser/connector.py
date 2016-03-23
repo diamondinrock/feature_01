@@ -21,5 +21,5 @@ def getTask(request, number):
     DirTasks_as_json = serializers.serialize('json', DirTasks.objects.filter(pk = number), fields=('task_name', 'task_description', 'task_leader', 'task_description'))
     return DirTasks_as_json
 
-
-
+def getRecentTasks(request, number_of_tasks):
+    return DirTasks.objects.order_by('-creation_date')[:number_of_tasks]

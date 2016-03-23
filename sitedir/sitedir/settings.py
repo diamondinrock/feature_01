@@ -75,12 +75,13 @@ WSGI_APPLICATION = 'sitedir.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+database_cnf_path = '/opt/dir/etc/my.cnf'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'DiamondRough',
-        'USER': 'root',
-        'PASSWORD': 'Testbox1!',
+        'OPTIONS': {
+            'read_default_file': database_cnf_path
+        }
         'HOST': 'localhost',
         'PORT': '3306',
     }
