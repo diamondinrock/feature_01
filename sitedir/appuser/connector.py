@@ -23,7 +23,7 @@ def getTask(request, number):
     return DirTasks_as_json
 
 def getRecentTasks(request, number_of_tasks):
-    return DirTasks.objects.order_by('-creation_date')[:number_of_tasks] # does not translate into json?, someone named cihstliu changed this? was not informed
+    return DirTasks.objects.order_by('-creation_date')[:number_of_tasks] # does not translate into json? cihstliu changed this
     
 def getNumMemberTasks(request): #b = task_id number #other variable parameters must check on
     cursor = connection.cursor()  #creates cursor
