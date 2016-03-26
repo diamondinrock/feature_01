@@ -5,204 +5,192 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema DiamondRough
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema diamondrough
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema DiamondRough
+-- Schema diamondrough
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `DiamondRough` DEFAULT CHARACTER SET utf8 ;
--- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `diamondrough` DEFAULT CHARACTER SET utf8 ;
+USE `diamondrough` ;
 
 -- -----------------------------------------------------
-USE `DiamondRough` ;
-
+-- Table `diamondrough`.`dir_personnel`
 -- -----------------------------------------------------
--- Table `DiamondRough`.`DIR_Tasks`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DiamondRough`.`DIR_Tasks` (
-  `task_id` INT NOT NULL AUTO_INCREMENT,
-  `task_name` VARCHAR(80) NOT NULL,
-  `task_leader` VARCHAR(45) NOT NULL,
-  `task_description` VARCHAR(250) NOT NULL,
-  `creation_date` DATETIME NOT NULL,
-  `modified_date` DATETIME NOT NULL,
-  PRIMARY KEY (`task_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `DiamondRough`.`DIR_Personnel`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DiamondRough`.`DIR_Personnel` (
-  `person_id` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_personnel` (
+  `person_id` INT(11) NOT NULL AUTO_INCREMENT,
   `user_name` VARCHAR(45) NOT NULL,
-  `openID` VARCHAR(45) NULL,
-  `last_name` INT NOT NULL,
+  `openID` VARCHAR(45) NULL DEFAULT NULL,
+  `header_url` VARCHAR(200) NULL,
+  `last_name` VARCHAR(45) NOT NULL,
   `first_name` VARCHAR(45) NOT NULL,
-  `middle_name` VARCHAR(45) NULL,
-  `gender` VARCHAR(10) NULL,
-  `city` VARCHAR(45) NULL,
-  `province_state` VARCHAR(45) NULL,
-  `country` VARCHAR(45) NULL,
-  `email_address` VARCHAR(100) NULL,
-  `goal` VARCHAR(200) NULL,
-  `executive_team_memeber` VARCHAR(10) NULL,
-  `creation_date` DATETIME NULL,
-  `modified_date` DATETIME NULL,
+  `middle_name` VARCHAR(45) NULL DEFAULT NULL,
+  `gender` VARCHAR(10) NULL DEFAULT NULL,
+  `city` VARCHAR(45) NOT NULL,
+  `province_state` VARCHAR(45) NULL DEFAULT NULL,
+  `country` VARCHAR(45) NULL DEFAULT NULL,
+  `occupation` VARCHAR(45) NOT NULL,
+  `email_address` VARCHAR(100) NULL DEFAULT NULL,
+  `self_introduction` VARCHAR(1000) NULL,
+  `executive_team_member` VARCHAR(10) NULL DEFAULT NULL,
+  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`person_id`),
   UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC),
   UNIQUE INDEX `openID_UNIQUE` (`openID` ASC))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `DiamondRough`.`DIR_Task_Assignments`
+-- Table `diamondrough`.`dir_education_history`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DiamondRough`.`DIR_Task_Assignments` (
-  `person_id` INT NOT NULL,
-  `task_id` INT NOT NULL,
-  `creation_date` DATETIME NOT NULL,
-  `modified_date` DATETIME NOT NULL,
-  INDEX `fk_DIR_Task_Assignments_DIR_Tasks1_idx` (`task_id` ASC),
-  PRIMARY KEY (`task_id`, `person_id`),
-  INDEX `fk_DIR_Task_Assignments_DIR_Personnel1_idx` (`person_id` ASC),
-  CONSTRAINT `fk_DIR_Task_Assignments_DIR_Tasks1`
-    FOREIGN KEY (`task_id`)
-    REFERENCES `DiamondRough`.`DIR_Tasks` (`task_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_DIR_Task_Assignments_DIR_Personnel1`
+CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_education_history` (
+  `person_id` INT(11) NOT NULL,
+  `college_name` VARCHAR(100) NOT NULL,
+  `college_start_date` DATETIME NOT NULL,
+  `major` VARCHAR(45) NOT NULL,
+  `college_end_date` DATETIME NULL,
+  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`college_name`, `college_start_date`, `person_id`),
+  INDEX `fk_dir_education_history_dir_personnel1_idx` (`person_id` ASC),
+  CONSTRAINT `fk_dir_education_history_dir_personnel1`
     FOREIGN KEY (`person_id`)
-    REFERENCES `DiamondRough`.`DIR_Personnel` (`person_id`)
-    ON DELETE NO ACTION
+    REFERENCES `diamondrough`.`dir_personnel` (`person_id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `DiamondRough`.`DIR_Employment_History`
+-- Table `diamondrough`.`dir_employment_history`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DiamondRough`.`DIR_Employment_History` (
-  `person_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_employment_history` (
+  `person_id` INT(11) NOT NULL,
   `employer_name` VARCHAR(100) NOT NULL,
   `employment_start_date` DATETIME NOT NULL,
   `job_title` VARCHAR(80) NOT NULL,
-  `employment_end_date` DATETIME NULL,
-  `creation_date` DATETIME NOT NULL,
-  `modified_date` DATETIME NOT NULL,
+  `employment_end_date` DATETIME NULL DEFAULT NULL,
+  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`employer_name`, `employment_start_date`, `person_id`),
-  INDEX `fk_DIR_Employment_History_DIR_Personnel1_idx` (`person_id` ASC),
-  CONSTRAINT `fk_DIR_Employment_History_DIR_Personnel1`
+  INDEX `fk_dir_employment_history_dir_personnel1_idx` (`person_id` ASC),
+  CONSTRAINT `fk_dir_employment_history_dir_personnel1`
     FOREIGN KEY (`person_id`)
-    REFERENCES `DiamondRough`.`DIR_Personnel` (`person_id`)
-    ON DELETE NO ACTION
+    REFERENCES `diamondrough`.`dir_personnel` (`person_id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `DiamondRough`.`DIR_Education_History`
+-- Table `diamondrough`.`dir_team`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DiamondRough`.`DIR_Education_History` (
-  `person_id` INT NOT NULL,
-  `college_name` VARCHAR(100) NOT NULL,
-  `start_date` DATETIME NOT NULL,
-  `major` VARCHAR(45) NOT NULL,
-  `end_date` DATETIME NULL,
-  `creation_date` DATETIME NOT NULL,
-  `modified_date` DATETIME NOT NULL,
-  PRIMARY KEY (`college_name`, `start_date`, `person_id`),
-  INDEX `fk_DIR_Education_History_DIR_Personnel1_idx` (`person_id` ASC),
-  CONSTRAINT `fk_DIR_Education_History_DIR_Personnel1`
-    FOREIGN KEY (`person_id`)
-    REFERENCES `DiamondRough`.`DIR_Personnel` (`person_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `DiamondRough`.`DIR_Teams`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DiamondRough`.`DIR_Teams` (
-  `team_id` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_team` (
+  `team_id` INT(11) NOT NULL AUTO_INCREMENT,
   `team_name` VARCHAR(80) NOT NULL,
+  `team_leader_id` INT(11) NULL,
   `team_description` VARCHAR(100) NOT NULL,
-  `creation_date` DATETIME NOT NULL,
-  `modifed_date` DATETIME NOT NULL,
-  PRIMARY KEY (`team_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `DiamondRough`.`DIR_Positions`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DiamondRough`.`DIR_Positions` (
-  `position_id` INT NOT NULL AUTO_INCREMENT,
-  `position_name` VARCHAR(45) NOT NULL,
-  `position_description` VARCHAR(100) NOT NULL,
-  `creation_date` DATETIME NOT NULL,
-  `modified_date` DATETIME NOT NULL,
-  PRIMARY KEY (`position_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `DiamondRough`.`DIR_Team_Positions`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DiamondRough`.`DIR_Team_Positions` (
-  `team_id` INT NOT NULL,
-  `position_id` INT NOT NULL,
-  `creation_date` DATETIME NOT NULL,
-  `modified_date` DATETIME NOT NULL,
-  PRIMARY KEY (`position_id`, `team_id`),
-  INDEX `fk_DIR_Team_Positions_DIR_Positions1_idx` (`position_id` ASC),
-  INDEX `fk_DIR_Team_Positions_DIR_Teams1_idx` (`team_id` ASC),
-  CONSTRAINT `fk_DIR_Team_Positions_DIR_Positions1`
-    FOREIGN KEY (`position_id`)
-    REFERENCES `DiamondRough`.`DIR_Positions` (`position_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_DIR_Team_Positions_DIR_Teams1`
-    FOREIGN KEY (`team_id`)
-    REFERENCES `DiamondRough`.`DIR_Teams` (`team_id`)
-    ON DELETE NO ACTION
+  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`team_id`),
+  INDEX `fk_dir_team_dir_personnel1_idx` (`team_leader_id` ASC),
+  CONSTRAINT `fk_dir_team_dir_personnel1`
+    FOREIGN KEY (`team_leader_id`)
+    REFERENCES `diamondrough`.`dir_personnel` (`person_id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `DiamondRough`.`DIR_Person_Position_Assignments`
+-- Table `diamondrough`.`dir_task`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DiamondRough`.`DIR_Person_Position_Assignments` (
-  `person_id` INT NOT NULL,
-  `team_id` INT NULL,
-  `position_id` INT NOT NULL,
-  `creation_date` DATETIME NOT NULL,
-  `modified_date` DATETIME NOT NULL,
-  INDEX `fk_DIR_Person_Position_Assignments_DIR_Positions1_idx` (`position_id` ASC),
-  INDEX `fk_DIR_Person_Position_Assignments_DIR_Personnel1_idx` (`person_id` ASC),
-  INDEX `fk_DIR_Person_Position_Assignments_DIR_Teams1_idx` (`team_id` ASC),
-  PRIMARY KEY (`person_id`, `team_id`, `position_id`),
-  CONSTRAINT `fk_DIR_Person_Position_Assignments_DIR_Positions1`
-    FOREIGN KEY (`position_id`)
-    REFERENCES `DiamondRough`.`DIR_Positions` (`position_id`)
-    ON DELETE NO ACTION
+CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_task` (
+  `task_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `team_id` INT(11) NOT NULL,
+  `task_name` VARCHAR(80) NOT NULL,
+  `task_leader_id` INT(11) NULL,
+  `task_description` VARCHAR(250) NOT NULL,
+  `signup_due_date` DATE NOT NULL,
+  `completion_date` DATE NULL,
+  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`task_id`, `team_id`),
+  INDEX `fk_dir_tasks_dir_teams1_idx` (`team_id` ASC),
+  INDEX `fk_dir_task_dir_personnel1_idx` (`task_leader_id` ASC),
+  CONSTRAINT `fk_dir_tasks_dir_teams1`
+    FOREIGN KEY (`team_id`)
+    REFERENCES `diamondrough`.`dir_team` (`team_id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_DIR_Person_Position_Assignments_DIR_Personnel1`
+  CONSTRAINT `fk_dir_task_dir_personnel1`
+    FOREIGN KEY (`task_leader_id`)
+    REFERENCES `diamondrough`.`dir_personnel` (`person_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `diamondrough`.`dir_task_assignment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_task_assignment` (
+  `person_id` INT(11) NOT NULL,
+  `task_id` INT(11) NOT NULL,
+  `comments` VARCHAR(100) NULL,
+  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`person_id`, `task_id`),
+  INDEX `fk_dir_task_assignments_dir_tasks1_idx` (`task_id` ASC),
+  INDEX `fk_dir_task_assignments_dir_personnel1_idx` (`person_id` ASC),
+  CONSTRAINT `fk_dir_task_assignments_dir_personnel1`
     FOREIGN KEY (`person_id`)
-    REFERENCES `DiamondRough`.`DIR_Personnel` (`person_id`)
-    ON DELETE NO ACTION
+    REFERENCES `diamondrough`.`dir_personnel` (`person_id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_DIR_Person_Position_Assignments_DIR_Teams1`
-    FOREIGN KEY (`team_id`)
-    REFERENCES `DiamondRough`.`DIR_Teams` (`team_id`)
-    ON DELETE NO ACTION
+  CONSTRAINT `fk_dir_task_assignments_dir_tasks1`
+    FOREIGN KEY (`task_id`)
+    REFERENCES `diamondrough`.`dir_task` (`task_id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
+-- -----------------------------------------------------
+-- Table `diamondrough`.`dir_team_member`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_team_member` (
+  `person_id` INT(11) NOT NULL,
+  `team_id` INT(11) NOT NULL,
+  `member_status` VARCHAR(45) NULL,
+  `contact_information` VARCHAR(80) NULL,
+  `self_introduction` VARCHAR(1000) NULL,
+  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`person_id`, `team_id`),
+  INDEX `fk_dir_team_members_dir_teams1_idx` (`team_id` ASC),
+  CONSTRAINT `fk_dir_team_members_dir_personnel1`
+    FOREIGN KEY (`person_id`)
+    REFERENCES `diamondrough`.`dir_personnel` (`person_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_dir_team_members_dir_teams1`
+    FOREIGN KEY (`team_id`)
+    REFERENCES `diamondrough`.`dir_team` (`team_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
