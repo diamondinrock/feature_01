@@ -16,7 +16,7 @@ class JSONEncoder(DjangoJSONEncoder):
         return super(JSONEncoder, self).default(obj)
             
 def getAllTeams(request):
-    DirTeams_as_json = serializers.serialize('json', DirTeams.objects.all())
+    DirTeams_as_json = serializers.serialize('json', DirTeam.objects.all())
     return DirTeams_as_json
 
 def getTask(request, number):
