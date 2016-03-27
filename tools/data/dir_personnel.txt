@@ -1,0 +1,6 @@
+MexicanStereotype, openid1, Garcia, Jose, M, Cancun, Mexican Province, Mexico
+BolsheSICK, openid2, Lenin, Vlad, M, Leningrad, Some Province, Mother Russia
+Tsarist Jesus, openid3, Immortal, Rasputin, M, Slavtopolis, Balkan Province, Serbia
+SouthernStereotype, openid4, Redneck, Joe, M, Austin, Texas, 'Murica
+GithubCat, openid5, Mascot, Cat, ?, New York, New York, United States of America
+Weird Japanese Ceramic Pig on My Desk, openid6, F, Akihabara, Kansai, Japan
