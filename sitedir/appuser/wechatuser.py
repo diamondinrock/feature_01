@@ -1,5 +1,6 @@
 import pycurl
 import json
+import os
 from .models import DirPersonnel
 
 def getCatch(url, filename):
@@ -47,7 +48,7 @@ def saveinfo(data):
 def getUser(request):
     wechatcode = request.GET.get('code', 'unknown')
     data1 = "data"
-    appsecret = getCode('./appuser/appsecret.json')
+    appsecret = getCode('../etc/appsecret.json')
     AppID = appsecret['AppID']
     AppSecret = appsecret['AppSecret']
     Code = wechatcode
@@ -59,5 +60,7 @@ def getUser(request):
     getCatch(url2, data2)
     datadict = getCode(data2)
     saveinfo(datadict)
+    os.remove(data1)
+    os.remove(data2)
     return datadict
     

@@ -15,6 +15,17 @@ body a {
 	color: #000 !important;
 }
 
+.h-list {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+}
+
+.h-list-item {
+	display: table-cell;
+	text-align: center;
+}
+
 .header .carousel-inner{
 	width:100%;
 	max-height: 200px !important;
@@ -47,10 +58,10 @@ body a {
 	line-height: 50px;
 }
 
-.groups {
+/*.groups {
 	display: flex;
 	justify-content: space-between;
-}
+}*/
 
 .groups .btn-circle {
 	width: 50px;
@@ -107,8 +118,8 @@ body a {
 }   
 
 .footer-contents {
-	display: flex;
-	align-items: center;
+/*	display: flex;
+	align-items: center;*/
 	height: 100%;
 }
 
@@ -118,6 +129,7 @@ body a {
 
 .footer a {
 	flex: 1;
+	vertical-align: middle;
 }
 
 .footer p {
