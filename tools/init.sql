@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_task` (
   `completion_date` DATE NULL,
   `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`task_id`, `team_id`),
+  PRIMARY KEY (`task_id`),
   INDEX `fk_dir_tasks_dir_teams1_idx` (`team_id` ASC),
   INDEX `fk_dir_task_dir_personnel1_idx` (`task_leader_id` ASC),
   CONSTRAINT `fk_dir_tasks_dir_teams1`

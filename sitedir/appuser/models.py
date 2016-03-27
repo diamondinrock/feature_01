@@ -13,16 +13,15 @@ from django.db import models
 class DirEducationHistory(models.Model):
     person = models.ForeignKey('DirPersonnel', models.DO_NOTHING)
     college_name = models.CharField(max_length=100)
-    start_date = models.DateTimeField()
+    college_start_date = models.DateTimeField()
     major = models.CharField(max_length=45)
-    end_date = models.DateTimeField(blank=True, null=True)
+    college_end_date = models.DateTimeField(blank=True, null=True)
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'DIR_Education_History'
-        unique_together = (('college_name', 'start_date', 'person'),)
+        db_table = 'dir_education_history'
 
 
 class DirEmploymentHistory(models.Model):
@@ -36,101 +35,83 @@ class DirEmploymentHistory(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'DIR_Employment_History'
-        unique_together = (('employer_name', 'employment_start_date', 'person'),)
-
-
-class DirPersonPositionAssignments(models.Model):
-    person = models.ForeignKey('DirPersonnel', models.DO_NOTHING)
-    team = models.ForeignKey('DirTeams', models.DO_NOTHING)
-    position = models.ForeignKey('DirPositions', models.DO_NOTHING)
-    creation_date = models.DateTimeField()
-    modified_date = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'DIR_Person_Position_Assignments'
-        unique_together = (('person', 'team', 'position'),)
+        db_table = 'dir_employment_history'
 
 
 class DirPersonnel(models.Model):
     person_id = models.AutoField(primary_key=True)
     user_name = models.CharField(unique=True, max_length=45)
     openid = models.CharField(db_column='openID', unique=True, max_length=45, blank=True, null=True)  # Field name made lowercase.
+    header_url = models.CharField(max_length=200, blank=True, null=True)
     last_name = models.CharField(max_length=45)
     first_name = models.CharField(max_length=45)
     middle_name = models.CharField(max_length=45, blank=True, null=True)
     gender = models.CharField(max_length=10, blank=True, null=True)
-    city = models.CharField(max_length=45, blank=True, null=True)
+    city = models.CharField(max_length=45)
     province_state = models.CharField(max_length=45, blank=True, null=True)
     country = models.CharField(max_length=45, blank=True, null=True)
+    occupation = models.CharField(max_length=45)
     email_address = models.CharField(max_length=100, blank=True, null=True)
-    goal = models.CharField(max_length=200, blank=True, null=True)
-    executive_team_memeber = models.CharField(max_length=10, blank=True, null=True)
+    self_introduction = models.CharField(max_length=1000, blank=True, null=True)
+    executive_team_member = models.CharField(max_length=10, blank=True, null=True)
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'DIR_Personnel'
+        db_table = 'dir_personnel'
 
 
-class DirPositions(models.Model):
-    position_id = models.AutoField(primary_key=True)
-    position_name = models.CharField(max_length=45)
-    position_description = models.CharField(max_length=100)
-    creation_date = models.DateTimeField()
-    modified_date = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'DIR_Positions'
-
-
-class DirTaskAssignments(models.Model):
-    person = models.ForeignKey(DirPersonnel, models.DO_NOTHING)
-    task = models.ForeignKey('DirTasks', models.DO_NOTHING)
-    creation_date = models.DateTimeField()
-    modified_date = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'DIR_Task_Assignments'
-        unique_together = (('task', 'person'),)
-
-
-class DirTasks(models.Model):
+class DirTask(models.Model):
     task_id = models.AutoField(primary_key=True)
+    team = models.ForeignKey('DirTeam', models.DO_NOTHING)
     task_name = models.CharField(max_length=80)
-    task_leader = models.CharField(max_length=45)
+    task_leader = models.ForeignKey(DirPersonnel, models.DO_NOTHING, blank=True, null=True)
     task_description = models.CharField(max_length=250)
+    signup_due_date = models.DateField()
+    completion_date = models.DateField(blank=True, null=True)
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'DIR_Tasks'
+        db_table = 'dir_task'
 
 
-class DirTeamPositions(models.Model):
-    team = models.ForeignKey('DirTeams', models.DO_NOTHING)
-    position = models.ForeignKey(DirPositions, models.DO_NOTHING)
+class DirTaskAssignment(models.Model):
+    person = models.ForeignKey(DirPersonnel, models.DO_NOTHING)
+    task = models.ForeignKey(DirTask, models.DO_NOTHING)
+    comments = models.CharField(max_length=100, blank=True, null=True)
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'DIR_Team_Positions'
-        unique_together = (('position', 'team'),)
+        db_table = 'dir_task_assignment'
 
 
-class DirTeams(models.Model):
+class DirTeam(models.Model):
     team_id = models.AutoField(primary_key=True)
     team_name = models.CharField(max_length=80)
+    team_leader = models.ForeignKey(DirPersonnel, models.DO_NOTHING, blank=True, null=True)
     team_description = models.CharField(max_length=100)
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'DIR_Teams'
+        db_table = 'dir_team'
+
+
+class DirTeamMember(models.Model):
+    person = models.ForeignKey(DirPersonnel, models.DO_NOTHING)
+    team = models.ForeignKey(DirTeam, models.DO_NOTHING)
+    member_status = models.CharField(max_length=45, blank=True, null=True)
+    contact_information = models.CharField(max_length=80, blank=True, null=True)
+    self_introduction = models.CharField(max_length=1000, blank=True, null=True)
+    creation_date = models.DateTimeField()
+    modified_date = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'dir_team_member'
