@@ -18,7 +18,7 @@ class JSONEncoder(DjangoJSONEncoder):
             
 def getAllTeams(request):
     DirTeam_as_json = serializers.serialize('json', DirTeam.objects.all())
-    return DirTeams_as_json
+    return DirTeam_as_json
 
 def getTask(request, number):
     pk = 'task_id'
@@ -26,7 +26,7 @@ def getTask(request, number):
     return DirTask_as_json
 
 def getRecentTasks(request, number_of_tasks):
-    return DirTask.objects.order_by('-creation_date')[:number_of_tasks] # does not translate into json? cihstliu changed this
+    return serializers.serialize('json',DirTask.objects.order_by('-creation_date')[:number_of_tasks]) # does not translate into json? cihstliu changed this
     
 def getNumMemberTasks(request): #b = task_id number #other variable parameters must check on
     cursor = connection.cursor()  #creates cursor
