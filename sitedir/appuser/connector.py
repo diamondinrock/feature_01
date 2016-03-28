@@ -18,7 +18,7 @@ class JSONEncoder(DjangoJSONEncoder):
             
 def getAllTeams(request):
     DirTeam_as_json = serializers.serialize('json', DirTeam.objects.all())
-    return DirTeam_as_json
+    return DirTeams_as_json
 
 def getTask(request, number):
     pk = 'task_id'
@@ -26,12 +26,12 @@ def getTask(request, number):
     return DirTask_as_json
 
 def getRecentTasks(request, number_of_tasks):
-    return serializers.serialize('json',DirTask.objects.order_by('-creation_date')[:number_of_tasks]) # does not translate into json? cihstliu changed this
+    return DirTask.objects.order_by('-creation_date')[:number_of_tasks] # does not translate into json? cihstliu changed this
     
 def getNumMemberTasks(request): #b = task_id number #other variable parameters must check on
     cursor = connection.cursor()  #creates cursor
     cursor.execute("select  a.team_id, b.team_name, a.task_id, a.task_name, count(c.person_id) from diamondrough.dir_task a, diamondrough.dir_team b, diamondrough.dir_task_assignment c where a.team_id = b.team_id and c.task_id = c.task_id group by b.team_id, a.task_id") #executes the sql quere
-    numMemberTasks = cursor.fetchone()
+    numMemberTasks = cursor.fetchall()
     numMemberTasks_as_json = serializers.serialize('json', numMemberTasks.objects.all()) #must test - see if json will take sql results
     return numMemberTasks
     
@@ -80,4 +80,4 @@ def getTaskbyID(taskID):
         members.append(user['fields']['user_name'])
     taskdetail['members']=members
     return taskdetail
- 
+
