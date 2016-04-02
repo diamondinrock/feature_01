@@ -537,7 +537,8 @@ def create_sql_file():
                  ]
 
     for i in range(len(tables)):
-        file.write('DELETE FROM %s;\n' % tables[i])
+        file.write('DELETE FROM diamondrough.%s;\n' % tables[i])
+        file.write('ALTER TABLE diamondrough.%s AUTO_INCREMENT = 1;\n' % tables[i])
         file.write('LOAD DATA LOCAL INFILE "%s_data.txt"\n' % tables[i])
         file.write('INTO TABLE diamondrough.%s\n' % tables[i])
         file.write('FIELDS TERMINATED BY \',\'\n')
