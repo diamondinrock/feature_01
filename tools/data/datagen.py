@@ -215,7 +215,7 @@ def gen_data_dir_education_history():
     try:
         person_file = open('dir_personnel_data.txt', 'r')
     except OSError:
-        print('Cannot opem dir_personnel_data.txt')
+        print('Cannot open dir_personnel_data.txt')
         quit(1)
 
     person_ids = []
