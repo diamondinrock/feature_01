@@ -17,21 +17,73 @@ class JSONEncoder(DjangoJSONEncoder):
         return super(JSONEncoder, self).default(obj)
             
 def getAllTeams(request):
-    DirTeams_as_json = serializers.serialize('json', DirTeam.objects.all())
+    DirTeam_as_json = serializers.serialize('json', DirTeam.objects.all())
     return DirTeams_as_json
 
-def getTask(request, number):
+def getTask(request, task_id):
+    '''
     pk = 'task_id'
     DirTask_as_json = serializers.serialize('json', DirTask.objects.filter(pk = number), fields=('task_name', 'task_description', 'task_leader', 'task_description'))
     return DirTask_as_json
+    '''
+    task = DirTask.objects.get(pk=task_id)
+    taskdetails = {}
+    taskdetails['task_id'] = task.task_id
+    taskdetails['team_name'] = DirTeam.objects.get(pk=task.team_id).team_name
+    taskdetails['task_name'] = task.task_name
+    if task.task_leader_id is not None:
+        taskdetails['task_leader_user_name'] = DirPersonnel.objects.get(pk=task.task_leader_id).user_name
+    else:
+        taskdetails['task_leader_user_name'] = 'No leader'
+    taskdetails['task_description'] = task.task_description
+    taskdetails['signup_due_date'] = task.signup_due_date
+    taskdetails['creation_date'] = task.creation_date
+    taskdetails['modified_date'] = task.modified_date
+    return taskdetails
 
 def getRecentTasks(request, number_of_tasks):
-    return DirTask.objects.order_by('-creation_date')[:number_of_tasks] # does not translate into json? cihstliu changed this
+    taskidlist = [task.task_id for task in DirTask.objects.order_by('-creation_date')[:number_of_tasks]]
+    recenttasks = []
+    for task_id in taskidlist:
+        recenttasks.append(getTask(request, task_id))
+    return recenttasks
+
+def getTeam(request, team_id):
+    team = DirTeam.objects.get(pk=team_id)
+    teamdetails = {}
+    teamdetails['team_id'] = team.team_id
+    teamdetails['team_name'] = team.team_name
+    teamdetails['first_letter'] = team.team_name[0]
+    if team.team_leader_id is not None:
+        teamdetails['team_leader_user_name'] = DirPersonnel.objects.get(pk=team.team_leader_id).user_name
+    else:
+        teamdetails['team_leader_user_name'] = 'No leader'
+    teamdetails['team_description'] = team.team_description
+    teamdetails['creation_date'] = team.creation_date
+    teamdetails['modified_date'] = team.modified_date
+    return teamdetails
+
+def getMemberList(request, team_id):
+    members = []
+    for member in DirTeamMember.objects.all():
+        if member.team_id == team_id:
+            members.append(member.person_id)
+    return members
+
+def getHotGroups(request, number_of_groups):
+    membercount = {}
+    for team in DirTeam.objects.all():
+        membercount[team.team_id] = len(getMemberList(request, team.team_id))
+    hotgroupids = list(reversed(sorted(membercount, key=membercount.get)))
+    hotgroups = []
+    for team_id in hotgroupids[:number_of_groups]:
+        hotgroups.append(getTeam(request, team_id))
+    return hotgroups
     
 def getNumMemberTasks(request): #b = task_id number #other variable parameters must check on
     cursor = connection.cursor()  #creates cursor
     cursor.execute("select  a.team_id, b.team_name, a.task_id, a.task_name, count(c.person_id) from diamondrough.dir_task a, diamondrough.dir_team b, diamondrough.dir_task_assignment c where a.team_id = b.team_id and c.task_id = c.task_id group by b.team_id, a.task_id") #executes the sql quere
-    numMemberTasks = cursor.fetchone()
+    numMemberTasks = cursor.fetchall()
     numMemberTasks_as_json = serializers.serialize('json', numMemberTasks.objects.all()) #must test - see if json will take sql results
     return numMemberTasks
     
@@ -80,4 +132,4 @@ def getTaskbyID(taskID):
         members.append(user['fields']['user_name'])
     taskdetail['members']=members
     return taskdetail
- 
+

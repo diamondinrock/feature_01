@@ -19,7 +19,7 @@ def index(request):
 			{'team_name':'Transportation', 'first_letter':'T'},
 			{'team_name':'Marketing', 'first_letter':'M'}
 		],
-		'tasks_list': connector.getRecentTasks(request, 5),
+		'tasks_list': [json.loads(connector.getRecentTasks(request, 5))],
 	}
 
 	return render(request, 'appuser/index.html', context)
