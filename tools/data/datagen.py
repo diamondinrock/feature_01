@@ -215,7 +215,7 @@ def gen_data_dir_education_history():
     try:
         person_file = open('dir_personnel_data.txt', 'r')
     except OSError:
-        print('Cannot locate dir_personnel_data.txt')
+        print('Cannot open dir_personnel_data.txt')
         quit(1)
 
     person_ids = []
@@ -265,7 +265,7 @@ def gen_data_dir_employment_history(multiple_chance=30, max_per_person=5):
     try:
         person_file = open('dir_personnel_data.txt', 'r')
     except OSError:
-        print('Cannot locate dir_personnel_data.txt')
+        print('Cannot open dir_personnel_data.txt')
         return
 
     person_ids = []
@@ -332,7 +332,7 @@ def gen_data_dir_team_member(multiple_chance=60, max_per_person=15):
         person_file = open('dir_personnel_data.txt', 'r')
         team_file = open('dir_team_data.txt', 'r')
     except OSError:
-        print('Cannot locate either dir_personnel_data.txt or dir_team_data.txt')
+        print('Cannot open either dir_personnel_data.txt or dir_team_data.txt')
         return
 
     person_ids = []
@@ -400,7 +400,7 @@ def gen_data_dir_task(multiple_chance=70, max_per_team=10):
     try:
         team_file = open('dir_team_data.txt', 'r')
     except OSError:
-        print('Cannot locate either dir_team_data.txt')
+        print('Cannot open either dir_team_data.txt')
         return
 
     team_ids = []
@@ -471,7 +471,7 @@ def gen_data_dir_task_assignment():
         team_member_file = open('dir_team_member_data.txt', 'r')
         task_file = open('dir_task_data.txt', 'r')
     except OSError:
-        print('Cannot locate either dir_team_data.txt or dir_team_member_data.txt or dir_task_data.txt')
+        print('Cannot open either dir_team_data.txt or dir_team_member_data.txt or dir_task_data.txt')
         return
 
     team_ids = []
@@ -537,7 +537,8 @@ def create_sql_file():
                  ]
 
     for i in range(len(tables)):
-        file.write('DELETE FROM %s;\n' % tables[i])
+        file.write('DELETE FROM diamondrough.%s;\n' % tables[i])
+        file.write('ALTER TABLE diamondrough.%s AUTO_INCREMENT = 1;\n' % tables[i])
         file.write('LOAD DATA LOCAL INFILE "%s_data.txt"\n' % tables[i])
         file.write('INTO TABLE diamondrough.%s\n' % tables[i])
         file.write('FIELDS TERMINATED BY \',\'\n')
@@ -556,4 +557,4 @@ gen_data_dir_task()
 gen_data_dir_task_assignment()
 create_sql_file()
 print('Run \'source load_data.sql\' in mysql to load data into tables')
-print('IMPORTANT: Must initially run mysql from dir/tools/data as paths are relative')
+print('IMPORTANT: Must initially access mysql from dir/tools/data')

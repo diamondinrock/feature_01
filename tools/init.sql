@@ -49,6 +49,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `diamondrough`.`dir_education_history`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_education_history` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `person_id` INT(11) NOT NULL,
   `college_name` VARCHAR(100) NOT NULL,
   `college_start_date` DATETIME NOT NULL,
@@ -56,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_education_history` (
   `college_end_date` DATETIME NULL,
   `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`college_name`, `college_start_date`, `person_id`),
+  PRIMARY KEY (`id`, `college_name`, `college_start_date`, `person_id`),
   INDEX `fk_dir_education_history_dir_personnel1_idx` (`person_id` ASC),
   CONSTRAINT `fk_dir_education_history_dir_personnel1`
     FOREIGN KEY (`person_id`)
@@ -71,6 +72,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `diamondrough`.`dir_employment_history`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_employment_history` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `person_id` INT(11) NOT NULL,
   `employer_name` VARCHAR(100) NOT NULL,
   `employment_start_date` DATETIME NOT NULL,
@@ -78,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_employment_history` (
   `employment_end_date` DATETIME NULL DEFAULT NULL,
   `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`employer_name`, `employment_start_date`, `person_id`),
+  PRIMARY KEY (`id`, `employer_name`, `employment_start_date`, `person_id`),
   INDEX `fk_dir_employment_history_dir_personnel1_idx` (`person_id` ASC),
   CONSTRAINT `fk_dir_employment_history_dir_personnel1`
     FOREIGN KEY (`person_id`)
@@ -144,12 +146,13 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `diamondrough`.`dir_task_assignment`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_task_assignment` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `person_id` INT(11) NOT NULL,
   `task_id` INT(11) NOT NULL,
   `comments` VARCHAR(100) NULL,
   `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`person_id`, `task_id`),
+  PRIMARY KEY (`id`, `person_id`, `task_id`),
   INDEX `fk_dir_task_assignments_dir_tasks1_idx` (`task_id` ASC),
   INDEX `fk_dir_task_assignments_dir_personnel1_idx` (`person_id` ASC),
   CONSTRAINT `fk_dir_task_assignments_dir_personnel1`
@@ -170,6 +173,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `diamondrough`.`dir_team_member`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_team_member` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `person_id` INT(11) NOT NULL,
   `team_id` INT(11) NOT NULL,
   `member_status` VARCHAR(45) NULL,
@@ -177,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `diamondrough`.`dir_team_member` (
   `self_introduction` VARCHAR(1000) NULL,
   `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`person_id`, `team_id`),
+  PRIMARY KEY (`id`, `person_id`, `team_id`),
   INDEX `fk_dir_team_members_dir_teams1_idx` (`team_id` ASC),
   CONSTRAINT `fk_dir_team_members_dir_personnel1`
     FOREIGN KEY (`person_id`)
