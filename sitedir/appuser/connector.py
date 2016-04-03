@@ -63,9 +63,9 @@ def getTeam(team_id):
     teamdetails['team_name'] = team.team_name
     teamdetails['first_letter'] = team.team_name[0]
     if team.team_leader_id is not None:
-        teamdetails['team_leader_user_name'] = DirPersonnel.objects.get(pk=team.team_leader_id).user_name
+        teamdetails['team_leader'] = DirPersonnel.objects.get(pk=team.team_leader_id).user_name
     else:
-        teamdetails['team_leader_user_name'] = 'No leader'
+        teamdetails['team_leader'] = 'No leader'
     teamdetails['team_description'] = team.team_description
     teamdetails['number_of_members'] = len(getMemberList(team_id))
     teamdetails['creation_date'] = team.creation_date
