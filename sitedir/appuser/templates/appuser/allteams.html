@@ -40,7 +40,7 @@
         </div>
 <div class="container">
     <ul class="list-group">
-    {% for team in teamsjson.0 %}
+    {% for team in teamsjson %}
     <li class="list-group-item">
     <div class="media">
          <div class="media-left">
@@ -51,9 +51,9 @@
             
              <div class="media-body">
 
-            <h4 class="media-heading"><b>{{team.fields.team_name}}</b></h4>
+            <h4 class="media-heading"><b>{{team.team_name}}</b></h4>
             
-            <p> {{team.fields.team_description}}</p>
+            <p> {{team.team_description}}</p>
        </div>
        </div>
     
