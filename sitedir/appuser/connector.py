@@ -161,7 +161,7 @@ def getTeambyID(teamID):
     tasks=[]
     if (NumDirTeamTasks > 0):
         for task in json.loads(DirTeamTasks):
-            tasks.append(task['fields']['task_name'])
+            tasks.append([task['pk'],task['fields']['task_name']])
     teamdetail['team_tasks']=tasks
     return teamdetail
     
