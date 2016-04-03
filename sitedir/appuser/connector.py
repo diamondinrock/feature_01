@@ -19,7 +19,7 @@ class JSONEncoder(DjangoJSONEncoder):
             
 def getAllTeams(request):
     DirTeam_as_json = serializers.serialize('json', DirTeam.objects.all())
-    return DirTeams_as_json
+    return DirTeam_as_json
 
 def getTask(request, task_id):
     '''
