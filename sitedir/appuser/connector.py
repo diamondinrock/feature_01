@@ -17,11 +17,18 @@ class JSONEncoder(DjangoJSONEncoder):
             return force_text(obj)
         return super(JSONEncoder, self).default(obj)
             
-def getAllTeams(request):
+def getAllTeams():
+    '''
     DirTeam_as_json = serializers.serialize('json', DirTeam.objects.all())
     return DirTeam_as_json
+    '''
+    teams = []
+    team_ids = [ team.team_id for team in DirTeam.objects.all() ]
+    for team_id in team_ids:
+        teams.append(getTeam(team_id))
+    return teams
 
-def getTask(request, task_id):
+def getTask(task_id):
     '''
     pk = 'task_id'
     DirTask_as_json = serializers.serialize('json', DirTask.objects.filter(pk = number), fields=('task_name', 'task_description', 'task_leader', 'task_description'))
@@ -42,14 +49,14 @@ def getTask(request, task_id):
     taskdetails['modified_date'] = task.modified_date
     return taskdetails
 
-def getRecentTasks(request, number_of_tasks):
-    taskidlist = [task.task_id for task in DirTask.objects.order_by('-creation_date')[:number_of_tasks]]
+def getRecentTasks(number_of_tasks):
+    task_ids = [ task.task_id for task in DirTask.objects.order_by('-creation_date')[:number_of_tasks] ]
     recenttasks = []
-    for task_id in taskidlist:
-        recenttasks.append(getTask(request, task_id))
+    for task_id in task_ids:
+        recenttasks.append(getTask(task_id))
     return recenttasks
 
-def getTeam(request, team_id):
+def getTeam(team_id):
     team = DirTeam.objects.get(pk=team_id)
     teamdetails = {}
     teamdetails['team_id'] = team.team_id
@@ -60,25 +67,26 @@ def getTeam(request, team_id):
     else:
         teamdetails['team_leader_user_name'] = 'No leader'
     teamdetails['team_description'] = team.team_description
+    teamdetails['number_of_members'] = len(getMemberList(team_id))
     teamdetails['creation_date'] = team.creation_date
     teamdetails['modified_date'] = team.modified_date
     return teamdetails
 
-def getMemberList(request, team_id):
+def getMemberList(team_id):
     members = []
     for member in DirTeamMember.objects.all():
         if member.team_id == team_id:
             members.append(member.person_id)
     return members
 
-def getHotGroups(request, number_of_groups):
+def getHotGroups(number_of_groups):
     membercount = {}
     for team in DirTeam.objects.all():
-        membercount[team.team_id] = len(getMemberList(request, team.team_id))
+        membercount[team.team_id] = len(getMemberList(team.team_id))
     hotgroupids = list(reversed(sorted(membercount, key=membercount.get)))
     hotgroups = []
     for team_id in hotgroupids[:number_of_groups]:
-        hotgroups.append(getTeam(request, team_id))
+        hotgroups.append(getTeam(team_id))
     return hotgroups
     
 def getNumMemberTasks(request): #b = task_id number #other variable parameters must check on
