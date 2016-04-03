@@ -37,5 +37,5 @@ def teams(request,teamid):
 	return render(request, 'appuser/team.html',context)
 
 def taskdetail(request, taskid):
-    context = {'taskdetail':connector.getTask(taskid)}
-    return render(request, 'appuser/task-detail.html', context)
+    context = {'taskdetail':connector.getTaskbyID(taskid)}
+    return render(request, 'appuser/task-detail.html',context)
