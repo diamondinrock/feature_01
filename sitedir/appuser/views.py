@@ -35,7 +35,11 @@ def wechat(request):
 def allteams(request):
 	context = {'teamsjson':[json.loads(connector.getAllTeams(request))]}
 	return render(request, 'appuser/allteams.html',context)
+def teams(request,teamid):
 
+	context = {'teamjson':[connector.getTeambyID(teamid)]}
+	print(context)
+	return render(request, 'appuser/team.html',context)
 def taskdetail(request, taskid):
     context = {'taskdetail':connector.getTaskbyID(taskid)}
     return render(request, 'appuser/task-detail.html',context)
