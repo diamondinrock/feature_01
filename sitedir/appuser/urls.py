@@ -6,5 +6,5 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^userinfo', views.wechat, name='wechat'),
     url(r'allteams', views.allteams, name='allteams'),
-    url(r'^taskdetail/(?P<taskid>\d+)/$', views.taskdetail, name='taskdetail'),
+    url(r'^task/(?P<taskid>\d+)/$', views.taskdetail, name='taskdetail'),
 ]
