@@ -33,9 +33,9 @@ def getTask(request, task_id):
     taskdetails['team_name'] = DirTeam.objects.get(pk=task.team_id).team_name
     taskdetails['task_name'] = task.task_name
     if task.task_leader_id is not None:
-        taskdetails['task_leader_user_name'] = DirPersonnel.objects.get(pk=task.task_leader_id).user_name
+        taskdetails['task_leader'] = DirPersonnel.objects.get(pk=task.task_leader_id).user_name
     else:
-        taskdetails['task_leader_user_name'] = 'No leader'
+        taskdetails['task_leader'] = 'No leader'
     taskdetails['task_description'] = task.task_description
     taskdetails['signup_due_date'] = task.signup_due_date
     taskdetails['creation_date'] = task.creation_date
