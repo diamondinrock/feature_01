@@ -13,8 +13,8 @@ def index(request):
 	# 	'tasks_list': Tasks.objects.all()
 	# }
 	context = {
-		'teams_list': connector.getHotGroups(4),
-		'tasks_list': connector.getRecentTasks(5),
+		'teams_list': [connector.getHotGroups(4)],
+		'tasks_list': [connector.getRecentTasks(5)],
 	}
 
 	return render(request, 'appuser/index.html', context)
