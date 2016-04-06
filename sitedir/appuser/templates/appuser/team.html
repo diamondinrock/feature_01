@@ -1,0 +1,77 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'appuser/style.css' %}" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+
+    <div class="header">
+        <div class="panel panel-default"style="border:none;margin:0px;">
+            <div class="panel-heading" style="text-align:center;background-color:#0e90d2;border:none;border-radius: 0 !important;"> <span style="color:white;font-size:1.7em;"><b>Team Detail</b></span></div>
+            <div class="panel-body" style="padding: 0px;">
+            <div class="media" style="padding:2%; background-color:#594f59;border:none;">
+                <div class="media-left">
+                    <button type="button" class="btn btn-default btn-circle"><i class="glyphicon glyphicon-ok"></i></button>
+                </div>
+
+                <div class="media-body">
+
+                    <h4 class="media-heading"><b><span style="color:white">{{teamjson.0.team_name}}</span></b></h4>
+
+                    <p><span style="color:white">{{teamjson.0.num_team_members}} member(s) | {{teamjson.0.num_new_tasks}} new task(s) | {{teamjson.0.num_total_tasks}} total task(s)</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="panel panel-default"style="border:none;margin:0px;">
+        <div class="panel-body">
+       Team Leader: {{teamjson.0.team_leader}}
+        </div>
+    </div>
+    <div class="panel panel-default"style="margin:0px;border-radius: 0 !important;border:none;">
+        <div class="panel-heading" style="background-color:#f2f0f2;"><b><span class="glyphicon glyphicon-info-sign" style="color:black;font-weight:"></span> Team Description</b></div>
+        <div class="panel-body">{{teamjson.0.team_description}}</div>
+    </div>
+
+
+    <div class="panel panel-default"style="margin:0px;border-radius: 0 !important;border:none;">
+        <div class="panel-heading" style="background-color:#f2f0f2;"><b><span class="glyphicon glyphicon-user" style="color:black"></span> Members</b></div>
+        <div class="panel-body">
+            <ul>
+            {%for member in teamjson.0.team_members%}
+        
+        <li>
+            {{member}}
+        </li>
+         {% endfor %}
+         </ul>
+        </div>
+    </div>
+
+
+    <div class="panel panel-default" style="margin:0px;border-radius: 0 !important;border:none;">
+        <div class="panel-heading" style="background-color:#f2f0f2;"><b><span class="glyphicon glyphicon-tasks" style="color:black"></span> Tasks</b></div>
+        <div class="panel-body">
+            <ul class="list-group">
+                {%for task in teamjson.0.team_tasks%}
+                
+                <a href="/appuser/task/{{ task.0 }}/"><li class="list-group-item"style="border-radius: 0">{{task.1}}</li></a>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+
+
+</body>
+
+</html>
