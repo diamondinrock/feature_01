@@ -1,79 +1,58 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="{% static 'appuser/style.css' %}" />
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    </head>
 
-    <body>
-        <div class="header">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'appuser/style.css' %}" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="nav">
-                     <div class=" pull-left">
-                    <h1><a data-toggle="collapse" href="#collapse1">All Teams</a></h1>
+<body>
+
+
+
+
+    <ul class="list-group"style=" padding-left:0px;
+    margin-left: 0px;">
+        {% for team in teamsjson.0 %}
+        <li class="list-group-item"style="border-radius: 0 !important;border:none;margin:0px;">
+            <a href='team/{{ team.team_id}}' class="list-group-item"style="margin:0px;padding:0px;">
+                <div class="media" style="padding:2%;">
+                    <div class="media-left">
+
+                        <div class="btn btn-default btn-circle">
+                            <i class="fa fa-user">{{team.team_name.0}}</i>
+                            </div>
+                       
                     </div>
-                    <div class="pull-right">
-                    <form class="form-inline ">
-                        <div class="form-group pull-right">
-                            <label for="exampleInputName2">Search</label>
-                            <input id="searchterm" type="text" class="form-control"placeholder="Input Search">
-                            <button id="search" type="submit" class="btn btn-primary">Search</button>
-                        </div>
-                    </form>
+
+                    <div class="media-body">
+
+                        <h4 class="media-heading"><b>{{team.team_name}}</b></h4>
+
+                        <p> {{team.team_description}}</p>
                     </div>
                 </div>
-                <div id="collapse1" class="panel-body panel-collapse collapse">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tOBXFAUE3m0" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div>
-
-
-
-
-        </div>
-<div class="container">
-    <ul class="list-group">
-    {% for team in teamsjson %}
-    <li class="list-group-item">
-    <div class="media">
-         <div class="media-left">
-        <div class="btn btn-default btn-lg btn-circle">
-            <i class="fa fa-user">{{ forloop.counter }}</i>
-        </div>
-        </div>
-            
-             <div class="media-body">
-
-            <h4 class="media-heading"><b>{{team.team_name}}</b></h4>
-            
-            <p> {{team.team_description}}</p>
-       </div>
-       </div>
-    
-    </li>
-    {% endfor %}
+            </a>
+        </li>
+        {% endfor %}
 
     </ul>
-</div>
-	<div class="footer">
-		<div class="footer-contents text-center">
-			<a href="#">
-				<i class="glyphicon glyphicon-flag fa fa-user"></i>
-				<p>Execute</p>
-			</a>
-			<a href="#">
-				<i class="glyphicon glyphicon-user fa fa-user"></i>
-				<p>Profile</p>
-			</a>
-		</div>
-	</div>
+
+    <div class="footer ">
+        <div class="footer-contents container h-list">
+            <a class="h-list-item" href="#">
+                <i class="glyphicon glyphicon-flag fa fa-user"></i>
+                <p>Execute</p>
+            </a>
+            <a class="h-list-item" href="#">
+                <i class="glyphicon glyphicon-user fa fa-user"></i>
+                <p>Profile</p>
+            </a>
+        </div>
+    </div>
 </body>
 
 </html>
