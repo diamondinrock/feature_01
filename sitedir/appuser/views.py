@@ -28,7 +28,7 @@ def wechat(request):
     return index(request)
 
 def allteams(request):
-	context = { 'teamsjson': connector.getAllTeams() }
+	context = { 'teamsjson':[connector.getAllTeams()] }
 	return render(request, 'appuser/allteams.html',context)
 
 def teams(request,teamid):
