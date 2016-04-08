@@ -46,11 +46,11 @@
 	</div>
 
 	<div class="groups container h-list">
-		{% for team in teams_list %}
+		{% for team in teams_list.0 %}
 			<div class="text-center h-list-item">
-				<a href="#">
+				<a href='team/{{team.team_id}}'>
 					<div class="btn btn-default btn-circle">
-						<i class="fa fa-user">{{team.first_letter}}</i>
+						<i class="fa fa-user">{{team.team_name.0}}</i>
 					</div>
 					<p>{{team.team_name}}</p>
 				</a>
@@ -68,15 +68,15 @@
 	</div>
 
 	<div class="tasks">
-		{% for task in tasks_list.1 %}
+		{% for task in tasks_list.0 %}
 			<div class="divider"></div>
 			<div class="task-preview">
-				<a href="#">
-					<h2>{{task.fields.task_name}}</h2>
-					<p>{{task.fields.task_description}}</p>
+				<a href="task/{{task.task_id}}">
+					<h2>{{task.task_name}}</h2>
+					<p>{{task.task_description}}</p>
 					<div class="task-footer">
-						<p>Leader: {{task.fields.task_leader}}</p>
-						<p>{{task.fields.creation_date}}</p>
+						<p>Leader: {{task.task_leader}}</p>
+						<p>{{task.creation_date}}</p>
 					</div>
 				</a>
 			</div>
