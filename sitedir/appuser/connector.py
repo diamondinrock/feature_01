@@ -174,20 +174,33 @@ def getTeambyID(teamID):
     return teamdetail
     
 def getTaskbyID(taskID):
-    DirPeopleInTask = serializers.serialize('json', DirPersonnel.objects.filter(dirtaskassignment__task_id__exact=taskID), fields=('user_name'))
-    DirLeaderInfo = serializers.serialize('json', DirPersonnel.objects.filter(dirtask__task_id__exact=taskID), fields=('user_name'))
-    DirTeamInfo = serializers.serialize('json', DirTeam.objects.filter(dirtask__task_id__exact=taskID), fields=('team_name'))
-    DirTaskInfo = serializers.serialize('json', DirTask.objects.filter(pk=taskID), fields=('task_name', 'task_description', 'creation_date', 'signup_due_date'))
     taskdetail={}
-    taskdetail['team_name']=json.loads(DirTeamInfo)[0]['fields']['team_name']
-    taskdetail['team_leader']=json.loads(DirLeaderInfo)[0]['fields']['user_name']
-    taskdetail['task_name']=json.loads(DirTaskInfo)[0]['fields']['task_name']
-    taskdetail['task_description']=json.loads(DirTaskInfo)[0]['fields']['task_description']
-    taskdetail['creation_date']=json.loads(DirTaskInfo)[0]['fields']['creation_date']
-    taskdetail['signup_due_date']=json.loads(DirTaskInfo)[0]['fields']['signup_due_date']
+    #Get task information
+    try:
+        task = DirTask.objects.get(pk=taskID)
+        taskdetail['task_name']=task.task_name
+        taskdetail['task_description']=task.task_description
+        taskdetail['creation_date']=task.creation_date
+        taskdetail['signup_due_date']=task.signup_due_date
+    except DirTask.DoesNotExist:
+        return taskdetail
+    #Get team information
+    try:
+        team = DirTeam.objects.get(dirtask__task_id__exact=taskID)
+        taskdetail['team_name']=team.team_name
+    except DirTeam.DoesNotExist:
+        taskdetail['team_name']= 'No Team'
+    #Get task leader
+    try:
+        leader = DirPersonnel.objects.get(dirtask__task_id__exact=taskID)
+        taskdetail['task_leader']=leader.user_name
+    except DirPersonnel.DoesNotExist:
+        taskdetail['task_leader']= 'No Task Leader'
+    #Get task members
+    taskassignment = DirPersonnel.objects.filter(dirtaskassignment__task_id__exact=taskID)
     members=[]
-    for user in json.loads(DirPeopleInTask):
-        members.append(user['fields']['user_name'])
+    for user in taskassignment:
+        members.append(user.user_name)
     taskdetail['members']=members
     return taskdetail
 
