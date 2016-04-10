@@ -174,55 +174,6 @@ def getTeambyID(teamID):
         teamdetail['num_new_tasks'] = 0
 
     return teamdetail
-
-def getTeambyID2(teamID):
-    teamdetail={}
-    
-    try:
-        DirTeamInfo = serializers.serialize('json', DirTeam.objects.filter(pk=teamID), fields=('team_name', 'team_description'))
-    except DirTeam.DoesNotExist:
-        return teamdetail
-    
-    try:
-        DirTeamLeader = serializers.serialize('json', DirPersonnel.objects.filter(dirteam__team_id__exact=teamID), fields=('user_name'))
-    except DirPersonnel.DoesNotExist:
-         DirTeamLeader = 'None'    
-    
-    try:
-        DirTeamMembers = serializers.serialize('json', DirPersonnel.objects.filter(dirteammember__team_id__exact=teamID), fields=('user_name'))
-        NumDirTeamMembers = DirPersonnel.objects.filter(dirteammember__team_id__exact=teamID).count()
-    except DirPersonnel.DoesNotExist:
-        NumDirTeamMembers = 0
-    
-    try:
-        DirTeamTasks = serializers.serialize('json', DirTask.objects.filter(team_id=teamID), fields=('task_name'))
-        NumDirTeamTasks = DirTask.objects.filter(team_id=teamID).count()
-    except DirTask.DoesNotExist:
-        NumDirTeamTasks = 0
-    
-    try:
-        DirNewTeamTasks = serializers.serialize('json', DirTask.objects.filter(team_id=teamID, signup_due_date__gt=datetime.date.today()))
-        NumDirNewTeamTasks = DirTask.objects.filter(team_id=teamID, signup_due_date__gt=datetime.date.today()).count()
-    except DirTask.DoesNotExist:
-        NumDirNewTeamTasks = 0
-        
-    teamdetail['team_name']=json.loads(DirTeamInfo)[0]['fields']['team_name']
-    teamdetail['team_leader']=json.loads(DirTeamLeader)[0]['fields']['user_name']
-    teamdetail['team_description']=json.loads(DirTeamInfo)[0]['fields']['team_description']
-    teamdetail['num_team_members']=NumDirTeamMembers
-    teamdetail['num_total_tasks']=NumDirTeamTasks
-    teamdetail['num_new_tasks']=NumDirNewTeamTasks
-    members=[]
-    if (NumDirTeamMembers > 0):
-        for user in json.loads(DirTeamMembers):
-            members.append(user['fields']['user_name'])
-    teamdetail['team_members']=members
-    tasks=[]
-    if (NumDirTeamTasks > 0):
-        for task in json.loads(DirTeamTasks):
-            tasks.append([task['pk'],task['fields']['task_name']])
-    teamdetail['team_tasks']=tasks
-    return teamdetail
     
 def getTaskbyID(taskID):
     taskdetail={}
