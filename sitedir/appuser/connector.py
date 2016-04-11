@@ -16,14 +16,21 @@ class JSONEncoder(DjangoJSONEncoder):
         if isinstance(obj, DirTeams): #models could be something different
             return force_text(obj)
         return super(JSONEncoder, self).default(obj)
-            
+
+def getAllTasks():
+    tasks = []
+    task_ids = [task.task_id for task in DirTask.objects.all()]
+    for task_id in task_ids:
+        tasks.append(getTask(task_id))
+    return tasks
+
 def getAllTeams():
     '''
     DirTeam_as_json = serializers.serialize('json', DirTeam.objects.all())
     return DirTeam_as_json
     '''
     teams = []
-    team_ids = [ team.team_id for team in DirTeam.objects.all() ]
+    team_ids = [team.team_id for team in DirTeam.objects.all()]
     for team_id in team_ids:
         teams.append(getTeam(team_id))
     return teams
