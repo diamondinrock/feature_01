@@ -33,7 +33,6 @@ def allteams(request):
 
 def teams(request,teamid):
 	context = {'teamjson':[connector.getTeambyID(teamid)]}
-	print(context)
 	return render(request, 'appuser/team.html',context)
 
 def taskdetail(request, taskid):

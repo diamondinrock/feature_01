@@ -167,7 +167,7 @@ def getTeambyID(teamID):
     except DirPersonnel.DoesNotExist:
         teamdetail['num_team_members'] = 0
 
-        #Get number of tasks
+    #Get number of tasks
 
     try:
         numtask = DirTask.objects.filter(team_id=teamID).count()
@@ -180,6 +180,14 @@ def getTeambyID(teamID):
     except DirTask.DoesNotExist:
         teamdetail['num_new_tasks'] = 0
 
+    #Get task names
+    
+    tasknames = DirTask.objects.filter(team_id=teamID)
+    tasks=[]
+    for task in tasknames:
+        tasks.append([task.task_id, task.task_name])
+    teamdetail['team_tasks']=tasks
+    
     return teamdetail
     
 def getTaskbyID(taskID):
