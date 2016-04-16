@@ -28,13 +28,13 @@
     任务详情
 </div>
 <header>
-<p class="task-title"><span class="glyphicon glyphicon-th-list title-icon" aria-hidden="true"></span>任务名称</p>
+<p class="task-title"><span class="glyphicon glyphicon-th-list title-icon" aria-hidden="true"></span>{{ taskdetail.task_name }}</p>
     <div class="sub-title">
         <p class="group">{{ taskdetail.team_name }}<span class="pub-time">发布于{{ taskdetail.creation_date }}</span></p>
     </div>
 </header>
 <div class="director">
-    负责人：{{ taskdetail.team_leader }}
+    负责人：{{ taskdetail.task_leader }}
     <span class="glyphicon glyphicon-chevron-right director-icon" aria-hidden="true"></span>
 </div>
 <div class="title-box">

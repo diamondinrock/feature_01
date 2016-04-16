@@ -13,8 +13,8 @@ def index(request):
 	# 	'tasks_list': Tasks.objects.all()
 	# }
 	context = {
-		'teams_list': connector.getHotGroups(4),
-		'tasks_list': connector.getRecentTasks(5),
+		'teams_list': [connector.getHotGroups(4)],
+		'tasks_list': [connector.getRecentTasks(5)],
 	}
 
 	return render(request, 'appuser/index.html', context)
@@ -28,12 +28,15 @@ def wechat(request):
     return index(request)
 
 def allteams(request):
-	context = { 'teamsjson': connector.getAllTeams() }
+	context = { 'teamsjson':[connector.getAllTeams()] }
 	return render(request, 'appuser/allteams.html',context)
+    
+def alltasks(request):
+	context = { 'tasksjson':[connector.getAllTasks()] }
+	return render(request, 'appuser/task-list.html',context)
 
 def teams(request,teamid):
 	context = {'teamjson':[connector.getTeambyID(teamid)]}
-	print(context)
 	return render(request, 'appuser/team.html',context)
 
 def taskdetail(request, taskid):

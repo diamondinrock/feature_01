@@ -33,14 +33,6 @@ def getCode(filename):
 def saveinfo(data):
     try:
         person = DirPersonnel.objects.get(openid=data['openid'])
-        person.user_name=data['nickname']
-        person.last_name=''
-        person.first_name=''
-        person.gender=data['sex']
-        person.city=data['city']
-        person.province_state=data['province']
-        person.country=data['country']
-        person.save()
     except DirPersonnel.DoesNotExist:
         person = DirPersonnel(openid=data['openid'], user_name=data['nickname'], gender=data['sex'], first_name='', last_name='', city=['city'], province_state=data['province'], country=['country'])
         person.save()
