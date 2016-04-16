@@ -13,24 +13,28 @@
 
 
 
-
+     <div style="color: #fff;
+    background: #0e90d2;
+    font-size: 18px;
+    text-align: center;
+    padding: 5px 0;">
+        <span style="color:white;font-size:1.7em;"><h1>All Teams</h1></span>
+    </div>
     <ul class="list-group"style=" padding-left:0px;
     margin-left: 0px;">
         {% for team in teamsjson.0 %}
-        <li class="list-group-item"style="border-radius: 0 !important;border:none;margin:0px;">
-            <a href='team/{{ team.team_id}}' class="list-group-item"style="margin:0px;padding:0px;">
-                <div class="media" style="padding:2%;">
+        <li class="list-group-item"style="padding:0px;">
+            <a href='team/{{ team.team_id}}' class="list-group-item"style="margin:0px;padding:0px;border:none;">
+                <div class="media" style="padding:2%;border: none;!important">
                     <div class="media-left">
-
                         <div class="btn btn-default btn-circle">
                             <i class="fa fa-user">{{team.team_name.0}}</i>
                             </div>
-                       
                     </div>
 
                     <div class="media-body">
 
-                        <h4 class="media-heading"><b>{{team.team_name}}</b></h4>
+                        <h2 class="media-heading"><b>{{team.team_name}}</b></h4>
 
                         <p> {{team.team_description}}</p>
                     </div>
