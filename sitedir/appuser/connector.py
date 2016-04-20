@@ -239,7 +239,7 @@ def getPersonalProfile(personID):
         person = DirPersonnel.objects.get(pk=personID)
         personalprofile['first_name']=person.first_name
         personalprofle['last_name']=person.last_name
-        personalprofile['self_introduction']=person.self_introduction
+        personalprofile['team_position']= None
         personalprofile['city']=person.city
         personalprofile['occupation']=person.occupation
     except DirPersonnel.DoesNotExist:
