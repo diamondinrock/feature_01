@@ -2,11 +2,13 @@ import json
 import datetime
 from django.http import HttpResponse
 from django.core import serializers
-from .models import DirTeam#change depending sql
+from .models import DirTeam
 from .models import DirTask
 from .models import DirPersonnel
 from .models import DirTeamMember
-from .models import DirTaskAssignment #possibly incorrect names, must check
+from .models import DirEmploymentHistory
+from .models import DirEducationHistory
+from .models import DirTaskAssignment 
 from django.utils.encoding import force_text
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import connection 
@@ -230,3 +232,45 @@ def getTaskbyID(taskID):
     
     return taskdetail
 
+def getPersonalProfile(personID):
+    personalprofile={}
+    #get firstname, lastname, city, occupation from DirPersonnel 
+    try:
+        person = DirPersonnel.objects.get(pk=personID)
+        personalprofile['first_name']=person.first_name
+        personalprofle['last_name']=person.last_name
+        personalprofile['self_introduction']=person.self_introduction
+        personalprofile['city']=person.city
+        personalprofile['occupation']=person.occupation
+    except DirPersonnel.DoesNotExist:
+        return personalprofile
+    #get college name, major, college start/end date from DirEducationHistory
+    try:
+        person = DirEducationHistory.objects.get(DirPersonnel__person_id__exact=personID)
+        personalprofile['college_name']=person.college_name #note: check if multiple entries of college exist
+        personalprofile['major']=person.major
+        personalprofile['college_start_date']=person.college_start_date
+        personalprofile['college_end_date']=person.college_end_date
+    except DirEducationHistory.DoesNotExist:
+        return personalprofile #tentative
+    #get tasks id from person id
+
+    try:
+        person = DirTeamMember.objects.get(DirPersonnel__person_id__exact=personID)
+        teamID = person.team_id
+        teamid = DirTeam.objects.get(DirTeamMember__team_id_exact=teamID) # may give multiple
+        personalprofile['team_name']= teamid.team_name
+        
+    except DirTeamMember.DoesNotExist:
+        return personalprofile
+
+   #tasks number (?) get task id(s)
+    try:
+        person = DirTaskAssignment.objects.get(DirPersonnel__person_id__exact=personID)
+        personalprofile['task_id']= person.task_id
+        
+
+    
+    
+        
+        
