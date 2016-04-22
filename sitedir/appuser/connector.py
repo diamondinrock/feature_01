@@ -269,7 +269,47 @@ def getPersonalProfile(personID):
         person = DirTaskAssignment.objects.filter(DirPersonnel__person_id__exact=personID)
         personalprofile['task_id']= person.task_id
         
-
+#second way for personal profile
+def GetPersonalProfile(personID):
+    personalprofile={}
+    #get firstname, lastname, city, occupation from DirPersonnel 
+    try:
+        person = DirPersonnel.objects.get(pk=personID)
+        personalprofile['first_name']=person.first_name
+        personalprofle['last_name']=person.last_name
+        personalprofile['team_position']= None
+        personalprofile['city']=person.city
+        personalprofile['occupation']=person.occupation
+    except DirPersonnel.DoesNotExist:
+        return personalprofile
+    #get college name, major, college start/end date from DirEducationHistory
+    try:
+        collegenames = DirEducationHistory.objects.filter(DirPersonnel__person_id__exact=personID)
+        colleges =[]
+        for college in collegenames:
+        colleges.append([college.college_name, college.major, college.college_start_date, college.college_end_date]) 
+        personalprofile['college_information']= colleges #note: check if multiple entries of college exist
+    except DirEducationHistory.DoesNotExist:
+        return personalprofile #tentative
+   #get tasks id from person id - one person could have more than one task; one person could belong to more than one team
+    try:
+        tasknames = DirTask.objects.filter(DirPersonnel__person_id__exact=personID)
+        tasks = []
+ for task in tasknames:
+        tasks.append([task.task_id, task.task_name])
+        personalprofile['task_name'] = tasks
+      
+    except DirTask.DoesNotExist:
+        return personalprofile
+    try:
+        teamnames = DirTeam.objects.filter(DirPersonnel__person_id__exact=personID) # may give multiple
+        teams = []
+        for team in teamnames:
+        teams.append([team.team_id, team.team_name])
+        personalprofle['team_name'] = teams
+            
+    except DirTeam.DoesNotExist:
+        return personalprofile
     
     
         
