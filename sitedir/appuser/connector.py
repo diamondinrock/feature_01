@@ -266,7 +266,7 @@ def getPersonalProfile(personID):
 
    #tasks number (?) get task id(s)
     try:
-        person = DirTaskAssignment.objects.get(DirPersonnel__person_id__exact=personID)
+        person = DirTaskAssignment.objects.filter(DirPersonnel__person_id__exact=personID)
         personalprofile['task_id']= person.task_id
         
 
