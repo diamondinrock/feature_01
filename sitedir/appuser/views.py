@@ -8,15 +8,10 @@ import json
 from . import wechatuser
 
 def index(request):
-	# context = {
-	# 	'teams_list': Teams.objects.all(), 
-	# 	'tasks_list': Tasks.objects.all()
-	# }
 	context = {
 		'teams_list': [connector.getHotGroups(4)],
 		'tasks_list': [connector.getRecentTasks(5)],
 	}
-
 	return render(request, 'appuser/index.html', context)
 
 def wechat(request):
