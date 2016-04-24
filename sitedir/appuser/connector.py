@@ -266,51 +266,15 @@ def getPersonalProfile(personID):
 
    #tasks number (?) get task id(s)
     try:
-        person = DirTaskAssignment.objects.filter(DirPersonnel__person_id__exact=personID)
-        personalprofile['task_id']= person.task_id
-        
-#second way for personal profile
-def GetPersonalProfile(personID):
-    personalprofile={}
-    #get firstname, lastname, city, occupation from DirPersonnel 
-    try:
-        person = DirPersonnel.objects.get(pk=personID)
-        personalprofile['first_name']=person.first_name
-        personalprofle['last_name']=person.last_name
-        personalprofile['team_position']= None
-        personalprofile['city']=person.city
-        personalprofile['occupation']=person.occupation
-    except DirPersonnel.DoesNotExist:
-        return personalprofile
-    #get college name, major, college start/end date from DirEducationHistory
-    try:
-        collegenames = DirEducationHistory.objects.filter(DirPersonnel__person_id__exact=personID)
-        colleges =[]
-        for college in collegenames:
-        colleges.append([college.college_name, college.major, college.college_start_date, college.college_end_date]) 
-        personalprofile['college_information']= colleges #note: check if multiple entries of college exist
-    except DirEducationHistory.DoesNotExist:
-        return personalprofile #tentative
-   #get tasks id from person id - one person could have more than one task; one person could belong to more than one team
-    try:
-        tasknames = DirTask.objects.filter(DirPersonnel__person_id__exact=personID)
-        tasks = []
- for task in tasknames:
-        tasks.append([task.task_id, task.task_name])
-        personalprofile['task_name'] = tasks
-      
+        totalTasks = DirTask.objects.filter(person_id=personID).count()
+        personalprofile['num_total_tasks']=totalTasks
     except DirTask.DoesNotExist:
-        return personalprofile
+        personalprofile['num_total_tasks'] = 0
     try:
-        teamnames = DirTeam.objects.filter(DirPersonnel__person_id__exact=personID) # may give multiple
-        teams = []
-        for team in teamnames:
-        teams.append([team.team_id, team.team_name])
-        personalprofle['team_name'] = teams
-            
-    except DirTeam.DoesNotExist:
-        return personalprofile
-    
-    
-        
-        
+        newTasks = DirTask.objects.filter(person_id=personID)
+        personalprofile['new_tasks']=newTasks
+    except DirTask.DoesNotExist:
+        personalprofile['new_tasks'] = 0
+    try:
+        completedTasks = DirTask.objects.filter(person_id=personID, completion_date__gt = datetime.date(year=year,month=month,day=day,hour=hour)
+        personalprofile['completed_tasks']        
