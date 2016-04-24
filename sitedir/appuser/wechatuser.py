@@ -40,7 +40,7 @@ def saveinfo(data):
 def getUser(request):
     wechatcode = request.GET.get('code', 'unknown')
     data1 = "data"
-    appsecret = getCode('../etc/appsecret.json')
+    appsecret = getCode('/opt/dir/etc/appsecret.json')
     AppID = appsecret['AppID']
     AppSecret = appsecret['AppSecret']
     Code = wechatcode
