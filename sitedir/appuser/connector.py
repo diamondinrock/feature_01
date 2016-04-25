@@ -2,13 +2,13 @@ import json
 import datetime
 from django.http import HttpResponse
 from django.core import serializers
-from .models import DirTeam#change depending sql
+from .models import DirTeam
 from .models import DirTask
 from .models import DirPersonnel
 from .models import DirTeamMember
-from .models import DirTaskAssignment #possibly incorrect names, must check
 from .models import DirEmploymentHistory
 from .models import DirEducationHistory
+from .models import DirTaskAssignment 
 from django.utils.encoding import force_text
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import connection 
@@ -27,6 +27,10 @@ def getAllTasks():
     return tasks
 
 def getAllTeams():
+    '''
+    DirTeam_as_json = serializers.serialize('json', DirTeam.objects.all())
+    return DirTeam_as_json
+    '''
     teams = []
     team_ids = [team.team_id for team in DirTeam.objects.all()]
     for team_id in team_ids:
@@ -34,6 +38,11 @@ def getAllTeams():
     return teams
 
 def getTask(task_id):
+    '''
+    pk = 'task_id'
+    DirTask_as_json = serializers.serialize('json', DirTask.objects.filter(pk = number), fields=('task_name', 'task_description', 'task_leader', 'task_description'))
+    return DirTask_as_json
+    '''
     task = DirTask.objects.get(pk=task_id)
     taskdetails = {}
     taskdetails['task_id'] = task.task_id
@@ -88,222 +97,7 @@ def getHotGroups(number_of_groups):
     for team_id in hotgroupids[:number_of_groups]:
         hotgroups.append(getTeam(team_id))
     return hotgroups
-
-def getPersonnelData(person_id):
-    personnel = DirPersonnel.objects.get(pk=person_id)
-    data = {}
-    data['user_name'] = personnel.user_name
-    data['first_name'] = personnel.first_name
-    data['last_name'] = personnel.last_name
-    data['name'] = data['first_name'] + ' ' + data['last_name']
-    data['city'] = personnel.city
-    data['occupation'] = personnel.occupation
-    data['creation_date'] = personnel.creation_date
-    data['modified_date'] = personnel.modified_date
     
-    openid = personnel.openid
-    if openid is None:
-        openid = ''
-    data['openid'] = openid
-    header_url = personnel.header_url
-    if header_url is None:
-        header_url = ''
-    data['header_url'] = header_url
-    middle_name = personnel.middle_name
-    if middle_name is None:
-        middle_name = ''
-    data['middle_name'] = middle_name
-    gender = personnel.gender
-    if gender is None:
-        gender = ''
-    data['gender'] = gender
-    province_state = personnel.province_state
-    if province_state is None:
-        province_state = ''
-    data['province_state'] = province_state
-    country = personnel.country
-    if country is None:
-        country = ''
-    data['country'] = country
-    email_address = personnel.email_address
-    if email_address is None:
-        email_address = ''
-    data['email_address'] = email_address
-    self_introduction = personnel.self_introduction
-    if self_introduction is None:
-        self_introduction = ''
-    data['self_introduction'] = self_introduction
-    executive_team_member = personnel.executive_team_member
-    if executive_team_member is None:
-        executive_team_member = ''
-    data['executive_team_member'] = executive_team_member
-    
-    return data
-
-def updatePersonnelData(person_id, user_name=None, openid=None, header_url=None, first_name=None, middle_name=None, last_name=None, gender=None, city=None, province_state=None, country=None, occupation=None, email_address=None, self_introduction=None, executive_team_member=None):
-    personnel = DirPersonnel.objects.get(pk=person_id)
-    if user_name:
-        personnel.user_name = user_name
-    if openid:
-        personnel.openid = openid
-    if header_url:
-        personnel.header_url = header_url
-    if first_name:
-        personnel.first_name = first_name
-    if middle_name:
-        personnel.middle_name = middle_name
-    if last_name:
-        personnel.last_name = last_name
-    if gender:
-        personnel.gender = gender
-    if city:
-        personnel.city = city
-    if province_state:
-        personnel.province_state = province_state
-    if country:
-        personnel.country = country
-    if occupation:
-        personnel.occupation = occupation
-    if email_address:
-        personnel.email_address = email_address
-    if self_introduction:
-        personnel.self_introduction = self_introduction
-    if executive_team_member:
-        personnel.executive_team_member = executive_team_member
-
-    try:
-        personnel.save()
-    except:
-        print('Error occured while updating personnel data')
-        return -1
-    return 1
-
-def addEducationHistory(person_id, college_name, college_start_date, major, college_end_date=None):
-    education = DirEducationHistory(person_id=person_id, college_name=college_name, college_start_date=college_start_date, major=major, college_end_date=college_end_date)
-    try:
-        education.save()
-    except:
-        print('Error occured while adding education history')
-        return -1
-    return 1
-
-def removeEducationHistory(person_id, college_name, college_start_date):
-    education = DirEducationHistory.objects.filter(person_id=person_id, college_name=college_name, college_start_date=college_start_date)
-    if not len(education):
-        print('No matching education history')
-        return -1
-    try:
-        education.delete()
-    except:
-        print('Error occured while deleting education history')
-        return -1
-    return 1
-
-def addEmploymentHistory(person_id, employer_name, employment_start_date, job_title, employment_end_date=None):
-    employment = DirEmploymentHistory(person_id=person_id, employer_name=employer_name, employment_start_date=employment_start_date, job_title=job_title, employment_end_date=employment_end_date)
-    try:
-        employment.save()
-    except:
-        print('Error occured while adding employment history')
-        return -1
-    return 1
-
-def removeEmploymentHistory(person_id, employer_name, employment_start_date):
-    employment = DirEmploymentHistory.objects.filter(person_id=person_id).filter(employer_name=employer_name).filter(employment_start_date=employment_start_date)
-    if not len(employment):
-        print('No matching employment history')
-        return -1
-    try:
-        employment.delete()
-    except:
-        print('Error occured while deleting employment history')
-        return -1
-    return 1
-
-def getEducationHistoryByPersonnel(person_id):
-    education_history = DirEducationHistory.objects.filter(person_id=person_id)
-    data = []
-    for education in education_history:
-        educationdata = {}
-        educationdata['student_name'] = getPersonnelData(person_id)['name']
-        educationdata['college_start_date'] = education.college_start_date
-        educationdata['major'] = education.major
-        educationdata['creation_date'] = education.creation_date
-        educationdata['modified_date'] = education.modified_date
-        college_end_date = education.college_end_date
-        if college_end_date is None:
-            college_end_date = ''
-        educationdata['college_end_date'] = college_end_date
-        data.append(educationdata)
-
-    return data
-
-def getEmploymentHistoryByPersonnel(person_id):
-    employment_history = DirEmploymentHistory.objects.filter(person_id=person_id)
-    data = []
-    for employment in employment_history:
-        employmentdata = {}
-        employmentdata['employee_name'] = getPersonnelData(person_id)['name']
-        employmentdata['employer_name'] = employment.employer_name
-        employmentdata['employment_start_date'] = employment.employment_start_date
-        employmentdata['creation_date'] = employment.creation_date
-        employmentdata['modified_date'] = employment.modified_date
-        employment_end_date = employment.employment_end_date
-        if employment_end_date is None:
-            employment_end_date = ''
-        employmentdata['employment_end_date'] = employment_end_date
-        data.append(employmentdata)
-
-    return data
-
-# education_history and employment_history are lists of dictionaries
-# dictionary are from above 2 functions
-def getPersonalProfileSettingsData(person_id):
-    data = {}
-    personneldata = getPersonnelData(person_id)
-    data['name'] = personneldata['name']
-    data['city'] = personneldata['city']
-    data['education_history'] = getEducationHistoryByPersonnel(person_id)
-    data['employment_history'] = getEmploymentHistoryByPersonnel(person_id)
-
-    return data
-
-
-    
-def getNumMemberTasks(request): #b = task_id number #other variable parameters must check on
-    cursor = connection.cursor()  #creates cursor
-    cursor.execute("select  a.team_id, b.team_name, a.task_id, a.task_name, count(c.person_id) from diamondrough.dir_task a, diamondrough.dir_team b, diamondrough.dir_task_assignment c where a.team_id = b.team_id and c.task_id = c.task_id group by b.team_id, a.task_id") #executes the sql quere
-    numMemberTasks = cursor.fetchall()
-    numMemberTasks_as_json = serializers.serialize('json', numMemberTasks.objects.all()) #must test - see if json will take sql results
-    return numMemberTasks
-    
-def getNumNewTasks(request):
-    cursor = connection.cursor()  #creates cursor
-    cursor.execute("select a.team_id, a.team_name, count(distinct(b.task_id)) from dir_team a, dir_task b where a.team_id = b.team_id and DATEDIFF (b.signup_due_date,NOW()) > 1 group by b.team_id") #executes the sql 
-    numNewTasks = cursor.fetchall()
-    numNewTasks_as_json = serializers.serialize('json', numNewTasks.objects.all()) 
-    return numNewTasks
-    
-def getTotalTasks(request):
-    cursor = connection.cursor()  #creates cursor
-    cursor.execute("select  a.team_id, b.team_name, count(a.task_id) from diamondrough.dir_task a, diamondrough.dir_team b where a.team_id = b.team_id group by b.team_id") #executes the sql 
-    totalTasks = cursor.fetchall()
-    totalTasks_as_json = serializers.serialize('json', totalTasks.objects.all()) 
-    return totalTasks
-
-def getTeamMembers(request): #need team parameter
-    cursor = connection.cursor()  #creates cursor
-    cursor.execute("select c.team_id, c.team_name, a.last_name, a.first_name from diamondrough.dir_personnel a, diamondrough.dir_team_member b,  diamondrough.dir_team c where a.person_id = b.person_id  and b.team_id = c.team_id") #executes the sql query, must find out selecting team name parameter
-    teamMembers = cursor.fetchall()
-    teamMembers_as_json = serializers.serialize('json', teamMembers.objects.all()) #may not need json
-    return teamMembers
-
-def getNamesTasks(request):
-    cursor = connection.cursor()  #creates cursor
-    cursor.execute("select a.team_id, a.team_name, b.task_name from dir_team a,   dir_task b where a.team_id = b.team_id") #executes the sql 
-    namesTasks = cursor.fetchall()
-    namesTasks_as_json = serializers.serialize('json', namesTasks.objects.all()) #may not need json
-    return namesTasks
 
 def getTeambyID(teamID):
     teamdetail={}
@@ -404,3 +198,55 @@ def getTaskbyID(taskID):
     
     return taskdetail
 
+def getPersonalProfile(personID):
+    personalprofile={}
+    #get firstname, lastname, city, occupation from DirPersonnel 
+    try:
+        person = DirPersonnel.objects.get(pk=personID)
+        personalprofile['first_name']=person.first_name
+        personalprofle['last_name']=person.last_name
+        personalprofile['team_position']= None
+        personalprofile['city']=person.city
+        personalprofile['occupation']=person.occupation
+    except DirPersonnel.DoesNotExist:
+        return personalprofile
+    #get college name, major, college start/end date from DirEducationHistory
+    try:
+        person = DirEducationHistory.objects.get(DirPersonnel__person_id__exact=personID)
+        personalprofile['college_name']=person.college_name #note: check if multiple entries of college exist
+        personalprofile['major']=person.major
+        personalprofile['college_start_date']=person.college_start_date
+        personalprofile['college_end_date']=person.college_end_date
+    except DirEducationHistory.DoesNotExist:
+        return personalprofile #tentative
+    #get tasks id from person id
+
+    try:
+        person = DirTeamMember.objects.get(DirPersonnel__person_id__exact=personID)
+        teamID = person.team_id
+        teamid = DirTeam.objects.get(DirTeamMember__team_id_exact=teamID) # may give multiple
+        personalprofile['team_name']= teamid.team_name
+        
+    except DirTeamMember.DoesNotExist:
+        return personalprofile
+
+   #tasks number (?) get task id(s)
+    try:
+        totalTasks = DirTask.objects.filter(person_id=personID).count()
+        personalprofile['num_total_tasks']=totalTasks
+    except DirTask.DoesNotExist:
+        personalprofile['num_total_tasks'] = 0
+    try:
+        newTasks = DirTask.objects.filter(person_id=personID)
+        personalprofile['new_tasks']=newTasks
+    except DirTask.DoesNotExist:
+        personalprofile
+    try:
+        completedTasks = DirTask.objects.filter(person_id=personID, completion_date__gt = datetime.date(year=year,month=month,day=day,hour=hour)
+        personalprofile['completed_tasks'] = completedTasks
+    except DirTask.DoesNotExist:
+        personalprofile['completed_tasks'] = None
+        
+   
+             
+        
