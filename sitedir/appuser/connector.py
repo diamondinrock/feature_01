@@ -445,7 +445,7 @@ def getPersonalProfile(personID):
     except DirTask.DoesNotExist:
         personalprofile
     try:
-        completedTasks = DirTask.objects.filter(person_id=personID, completion_date__gt = datetime.date(year=year,month=month,day=day,hour=hour)
+        completedTasks = DirTask.objects.filter(person_id=personID, completion_date__gt = datetime.date(year=year,month=month,day=day,hour=hour))
         personalprofile['completed_tasks'] = completedTasks
     except DirTask.DoesNotExist:
         personalprofile['completed_tasks'] = None
