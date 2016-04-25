@@ -98,40 +98,6 @@ def getHotGroups(number_of_groups):
         hotgroups.append(getTeam(team_id))
     return hotgroups
     
-def getNumMemberTasks(request): #b = task_id number #other variable parameters must check on
-    cursor = connection.cursor()  #creates cursor
-    cursor.execute("select  a.team_id, b.team_name, a.task_id, a.task_name, count(c.person_id) from diamondrough.dir_task a, diamondrough.dir_team b, diamondrough.dir_task_assignment c where a.team_id = b.team_id and c.task_id = c.task_id group by b.team_id, a.task_id") #executes the sql quere
-    numMemberTasks = cursor.fetchall()
-    numMemberTasks_as_json = serializers.serialize('json', numMemberTasks.objects.all()) #must test - see if json will take sql results
-    return numMemberTasks
-    
-def getNumNewTasks(request):
-    cursor = connection.cursor()  #creates cursor
-    cursor.execute("select a.team_id, a.team_name, count(distinct(b.task_id)) from dir_team a, dir_task b where a.team_id = b.team_id and DATEDIFF (b.signup_due_date,NOW()) > 1 group by b.team_id") #executes the sql 
-    numNewTasks = cursor.fetchall()
-    numNewTasks_as_json = serializers.serialize('json', numNewTasks.objects.all()) 
-    return numNewTasks
-    
-def getTotalTasks(request):
-    cursor = connection.cursor()  #creates cursor
-    cursor.execute("select  a.team_id, b.team_name, count(a.task_id) from diamondrough.dir_task a, diamondrough.dir_team b where a.team_id = b.team_id group by b.team_id") #executes the sql 
-    totalTasks = cursor.fetchall()
-    totalTasks_as_json = serializers.serialize('json', totalTasks.objects.all()) 
-    return totalTasks
-
-def getTeamMembers(request): #need team parameter
-    cursor = connection.cursor()  #creates cursor
-    cursor.execute("select c.team_id, c.team_name, a.last_name, a.first_name from diamondrough.dir_personnel a, diamondrough.dir_team_member b,  diamondrough.dir_team c where a.person_id = b.person_id  and b.team_id = c.team_id") #executes the sql query, must find out selecting team name parameter
-    teamMembers = cursor.fetchall()
-    teamMembers_as_json = serializers.serialize('json', teamMembers.objects.all()) #may not need json
-    return teamMembers
-
-def getNamesTasks(request):
-    cursor = connection.cursor()  #creates cursor
-    cursor.execute("select a.team_id, a.team_name, b.task_name from dir_team a,   dir_task b where a.team_id = b.team_id") #executes the sql 
-    namesTasks = cursor.fetchall()
-    namesTasks_as_json = serializers.serialize('json', namesTasks.objects.all()) #may not need json
-    return namesTasks
 
 def getTeambyID(teamID):
     teamdetail={}
@@ -277,6 +243,10 @@ def getPersonalProfile(personID):
         personalprofile
     try:
         completedTasks = DirTask.objects.filter(person_id=personID, completion_date__gt = datetime.date(year=year,month=month,day=day,hour=hour)
-        personalprofile['completed_tasks']       
+        personalprofile['completed_tasks'] = completedTasks
     except DirTask.DoesNotExist:
         personalprofile['completed_tasks'] = None
+        
+   
+             
+        
