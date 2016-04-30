@@ -3,6 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 from django.http import HttpRequest
+from .models import DirPersonnel
 from . import connector
 import json
 from . import wechatuser
@@ -25,6 +26,15 @@ def wechat(request):
     nsukey = request.GET.get('nsukey', 'none')
     if ( nsukey == 'none'):
         datadict = wechatuser.getUser(request)
+        urlopenid = datadict['openid']
+        try:
+            person = DirPersonnel.objects.get(openID=urlopenid)
+            person_id = person.person_id
+            request.session['person_id'] = person_id
+            request.session.set_expiry(0)
+            request.session.save()
+        except DirPersonnel.DoesNotExist:
+            pass
     return index(request)
 
 def allteams(request):
@@ -42,3 +52,19 @@ def teams(request,teamid):
 def taskdetail(request, taskid):
     context = {'taskdetail':connector.getTaskbyID(taskid)}
     return render(request, 'appuser/task-detail.html',context)
+
+    
+def setpersonid(request, personid):
+    request.session['person_id'] = personid
+    request.session.set_expiry(0)
+    request.session.save()
+    context = { 'personid':request.session['person_id'] }
+    return render(request, 'appuser/setpersonid.html',context)
+
+def getpersonid(request):
+    if 'person_id' in request.session:
+        context = { 'personid':request.session['person_id'] }
+    else:
+        context = { 'personid':'No user set' }
+    return render(request, 'appuser/getpersonid.html',context)
+    
