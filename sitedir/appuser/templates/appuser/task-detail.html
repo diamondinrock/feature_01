@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -25,21 +26,21 @@
 </head>
 <body>
 <div class="task-nav">
-    任务详情
+    {%trans "Task Details"%}
 </div>
 <header>
 <p class="task-title"><span class="glyphicon glyphicon-th-list title-icon" aria-hidden="true"></span>{{ taskdetail.task_name }}</p>
     <div class="sub-title">
-        <p class="group">{{ taskdetail.team_name }}<span class="pub-time">发布于{{ taskdetail.creation_date }}</span></p>
+        <p class="group">{{ taskdetail.team_name }}<span class="pub-time">{%trans "Creation Date " %}{{ taskdetail.creation_date }}</span></p>
     </div>
 </header>
 <div class="director">
-    负责人：{{ taskdetail.task_leader }}
+   {% trans "Task Leader" %}：{{ taskdetail.task_leader }}
     <span class="glyphicon glyphicon-chevron-right director-icon" aria-hidden="true"></span>
 </div>
 <div class="title-box">
     <div class="title">
-        任务描述
+        {% trans "Task Description" %}
     </div>
 </div>
 <div class="content">
@@ -47,7 +48,7 @@
 </div>
 <div class="title-box">
     <div class="title">
-        截止日期
+       {% trans "Due Date" %}
     </div>
 </div>
 <div class="content">
@@ -55,7 +56,7 @@
 </div>
 <div class="title-box">
     <div class="title">
-        参与者
+        {% trans "Participants" %}
     </div>
 </div>
 <div class="content participants">
@@ -69,7 +70,7 @@
     
 </div>
 <nav class="navbar navbar-default navbar-fixed-bottom">
-<a href="#">我想参与</a>
+<a href="#">{% trans "Join Task" %}</a>
 </nav>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="http://7xskcc.com2.z0.glb.clouddn.com/jquery.js"></script>

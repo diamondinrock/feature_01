@@ -67,4 +67,25 @@ def getpersonid(request):
     else:
         context = { 'personid':'No user set' }
     return render(request, 'appuser/getpersonid.html',context)
-    
+def savesettings(request):
+    if(request.method == 'POST'):
+        if 'person_id' in request.session:
+            print(request.POST)
+            connector.updatePersonnelData(request.session['person_id'],None,None,None,request.POST['first_name'],None,request.POST['last_name'],request.POST['gender'],None,request.POST['state'],request.POST['country'],None,None,request.POST['introduction'],None)
+            print(request.POST['timefield'])
+            connector.updateEducation(request.session['person_id'],request.POST['college'],datetime.strptime(request.POST['timefield'], "%Y-%m-%d"),request.POST['major'],datetime.strptime(request.POST['endtimefield'], "%Y-%m-%d"))
+            connector.updateEmploy(request.session['person_id'],request.POST['employer'],request.POST['employstart'],request.POST['jobtitle'],request.POST['employend'])
+            return HttpResponse('')
+
+def profilesettings(request):
+	if 'person_id' in request.session:
+		education = connector.getEducationHistoryByPersonnel(request.session['person_id'])
+		employment = connector.getEmploymentHistoryByPersonnel(request.session['person_id'])
+		education[0]['college_start_date'] = datetime.strftime(education[0]['college_start_date'],'%Y-%m-%d')
+		education[0]['college_end_date'] = datetime.strftime(education[0]['college_end_date'],'%Y-%m-%d')
+		employment[0]['employment_start_date'] = datetime.strftime(employment[0]['employment_start_date'],'%Y-%m-%d')
+		employment[0]['employment_end_date'] = datetime.strftime(employment[0]['employment_end_date'],'%Y-%m-%d')
+		context = { 'persondata':connector.getPersonnelData(request.session['person_id']),'employdata':employment,'educationdata':education}
+	else:
+		context = { 'persondata':'No user set' }
+	return render(request, 'appuser/profile-setting.html',context)
