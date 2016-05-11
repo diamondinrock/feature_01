@@ -197,7 +197,58 @@ def updatePersonnelData(person_id, user_name=None, openid=None, header_url=None,
         print('Error occured while updating personnel data')
         return -1
     return 1
+def updateEducation(person_id, college_name, college_start_date, major, college_end_date=None):
+    try:
+        edu = DirEducationHistory.objects.get(person=person_id)
+    except DirPersonnel.DoesNotExist:
+        print('No such personnel to update')
+        return -1
+    
+    if college_name:
+        edu.college_name = college_name
+    if college_start_date:
+        edu.college_start_date = college_start_date
+    if major:
+        edu.major = major
+    if college_end_date:
+        edu.college_end_date = college_end_date
 
+    try:
+        edu.save()
+    except:
+        print('Error occured while updating personnel data')
+        return -1
+    return 1
+def updateEmploy(person_id, employer_name, employment_start_date, job_title, employment_end_date=None):
+    try:
+        employ = DirEmploymentHistory.objects.get(person=person_id)
+    except DirPersonnel.DoesNotExist:
+        print('No such personnel to update')
+        return -1
+    
+    if employer_name:
+        employ.employer_name = employer_name
+    if employment_start_date:
+        employ.employment_start_date = employment_start_date
+    if job_title:
+        employ.job_title = job_title
+    if employment_end_date:
+        employ.employment_end_date = employment_end_date
+
+    try:
+        employ.save()
+    except:
+        print('Error occured while updating personnel data')
+        return -1
+    return 1
+def addEducationHistory(person_id, college_name, college_start_date, major, college_end_date=None):
+    education = DirEducationHistory(person_id=person_id, college_name=college_name, college_start_date=college_start_date, major=major, college_end_date=college_end_date)
+    try:
+        education.save()
+    except:
+        print('Error occured while adding education history')
+        return -1
+    return 1
 def addEducationHistory(person_id, college_name, college_start_date, major, college_end_date=None):
     education = DirEducationHistory(person_id=person_id, college_name=college_name, college_start_date=college_start_date, major=major, college_end_date=college_end_date)
     try:
