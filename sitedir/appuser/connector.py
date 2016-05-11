@@ -407,7 +407,7 @@ def getPersonalProfile(personID):
     try:
         person = DirPersonnel.objects.get(pk=personID)
         personalprofile['first_name']=person.first_name
-        personalprofle['last_name']=person.last_name
+        personalprofile['last_name']=person.last_name
         personalprofile['team_position']= None
         personalprofile['city']=person.city
         personalprofile['occupation']=person.occupation
