@@ -407,11 +407,17 @@ def getPersonalProfile(personID):
     try:
         person = DirPersonnel.objects.get(pk=personID)
         personalprofile['first_name']=person.first_name
-        personalprofile['last_name']=person.last_name
+        personalprofle['last_name']=person.last_name
         personalprofile['team_position']= None
         personalprofile['city']=person.city
         personalprofile['occupation']=person.occupation
+        personalprofile['self_introduction'] = person.self_introduction
     except DirPersonnel.DoesNotExist:
+        return personalprofile
+    try:
+        person = DirEmploymentHistory.objects.get(DirPersonnel__person_id__exact=personID)
+        personalprofile['company']= person.employer_name #company != employername?
+    except DirEmploymentHistory.DoesNotExist:
         return personalprofile
     #get college name, major, college start/end date from DirEducationHistory
     try:
@@ -432,15 +438,13 @@ def getPersonalProfile(personID):
         
     except DirTeamMember.DoesNotExist:
         return personalprofile
-
-   #tasks number (?) get task id(s)
     try:
         totalTasks = DirTask.objects.filter(person_id=personID).count()
         personalprofile['num_total_tasks']=totalTasks
     except DirTask.DoesNotExist:
         personalprofile['num_total_tasks'] = 0
     try:
-        newTasks = DirTask.objects.filter(person_id=personID)
+        newTasks= DirTask.objects.filter(person_id=personID).filter(testfield=12).latest('testfield')
         personalprofile['new_tasks']=newTasks
     except DirTask.DoesNotExist:
         personalprofile
@@ -449,5 +453,4 @@ def getPersonalProfile(personID):
         personalprofile['completed_tasks'] = completedTasks
     except DirTask.DoesNotExist:
         personalprofile['completed_tasks'] = None
-
 
