@@ -68,3 +68,7 @@ def getpersonid(request):
         context = { 'personid':'No user set' }
     return render(request, 'appuser/getpersonid.html',context)
     
+def getPersonalProfile(request,personid):
+    context = { 'personalprofile':connector.getPersonalProfile(personid)}
+    return render(request, 'appuser/profile.html',context)
+    
