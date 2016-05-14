@@ -2,13 +2,7 @@ import json
 import datetime
 from django.http import HttpResponse
 from django.core import serializers
-from .models import DirTeam
-from .models import DirTask
-from .models import DirPersonnel
-from .models import DirTeamMember
-from .models import DirEmploymentHistory
-from .models import DirEducationHistory
-from .models import DirTaskAssignment 
+from .models import *
 from django.utils.encoding import force_text
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import connection 
@@ -115,81 +109,29 @@ def getPersonnelData(person_id):
     data['occupation'] = personnel.occupation
     data['creation_date'] = personnel.creation_date
     data['modified_date'] = personnel.modified_date
-    
-    openid = personnel.openid
-    if openid is None:
-        openid = ''
-    data['openid'] = openid
-    header_url = personnel.header_url
-    if header_url is None:
-        header_url = ''
-    data['header_url'] = header_url
-    middle_name = personnel.middle_name
-    if middle_name is None:
-        middle_name = ''
-    data['middle_name'] = middle_name
-    gender = personnel.gender
-    if gender is None:
-        gender = ''
-    data['gender'] = gender
-    province_state = personnel.province_state
-    if province_state is None:
-        province_state = ''
-    data['province_state'] = province_state
-    country = personnel.country
-    if country is None:
-        country = ''
-    data['country'] = country
-    email_address = personnel.email_address
-    if email_address is None:
-        email_address = ''
-    data['email_address'] = email_address
-    self_introduction = personnel.self_introduction
-    if self_introduction is None:
-        self_introduction = ''
-    data['self_introduction'] = self_introduction
-    executive_team_member = personnel.executive_team_member
-    if executive_team_member is None:
-        executive_team_member = ''
-    data['executive_team_member'] = executive_team_member
+
+    attr = ['openid', 'header_url', 'middle_name', 'gender', 'province_state', 'country', 'email_address', 'self_introduction', 'executive_team_member']
+    for field in attr:
+        value = getattr(personnel, field)
+        if value is None:
+            value = ''
+        data[field] = value
     
     return data
 
-def updatePersonnelData(person_id, user_name=None, openid=None, header_url=None, first_name=None, middle_name=None, last_name=None, gender=None, city=None, province_state=None, country=None, occupation=None, email_address=None, self_introduction=None, executive_team_member=None):
+def updatePersonnelData(person_id, new_user_name=None, new_openid=None, new_header_url=None, new_first_name=None, new_middle_name=None, new_last_name=None, new_gender=None, new_city=None, new_province_state=None, new_country=None, new_occupation=None, new_email_address=None, new_self_introduction=None, new_executive_team_member=None):
     try:
         personnel = DirPersonnel.objects.get(pk=person_id)
     except DirPersonnel.DoesNotExist:
         print('No such personnel to update')
         return -1
-    
-    if user_name:
-        personnel.user_name = user_name
-    if openid:
-        personnel.openid = openid
-    if header_url:
-        personnel.header_url = header_url
-    if first_name:
-        personnel.first_name = first_name
-    if middle_name:
-        personnel.middle_name = middle_name
-    if last_name:
-        personnel.last_name = last_name
-    if gender:
-        personnel.gender = gender
-    if city:
-        personnel.city = city
-    if province_state:
-        personnel.province_state = province_state
-    if country:
-        personnel.country = country
-    if occupation:
-        personnel.occupation = occupation
-    if email_address:
-        personnel.email_address = email_address
-    if self_introduction:
-        personnel.self_introduction = self_introduction
-    if executive_team_member:
-        personnel.executive_team_member = executive_team_member
+
+    fields = ['user_name', 'openid', 'header_url', 'first_name', 'middle_name', 'last_name', 'gender', 'city', 'province_state', 'country', 'occupation', 'email_address', 'self_introduction', 'executive_team_member']
+    new_values = [new_user_name, new_openid, new_header_url, new_first_name, new_middle_name, new_last_name, new_gender, new_city, new_province_state, new_country, new_occupation, new_email_address, new_self_introduction, new_executive_team_member]
+
+    for i in range(len(fields)):
+        if new_values[i]:
+            setattr(personnel, fields[i], new_values[i])
 
     try:
         personnel.save()
@@ -198,7 +140,62 @@ def updatePersonnelData(person_id, user_name=None, openid=None, header_url=None,
         return -1
     return 1
 
+def isMember(person_id, team_id):
+    return person_id in getMemberList(team_id)
+
+def addTask(team_id, task_name, task_description, signup_due_date, task_leader_id=None, completion_date=None):
+    task = DirTask(team_id=team_id, task_name=task_name, task_leader_id=task_leader_id, task_description=task_description, signup_due_date=signup_due_date, completion_date=completion_date)
+    try:
+        task.save()
+    except:
+        print('Error occured while adding task')
+        return -1
+    return 1
+
+def removeTask(task_id):
+    task = DirTask.objects.filter(pk=task_id)
+    if not task:
+        print('No matching task to remove')
+        return 0
+
+    try:
+        task.delete()
+    except:
+        print('Error occured while deleting task')
+        return -1
+    return 1
+
+def updateTaskData(task_id, new_task_name=None, new_task_leader_id=None, new_task_description=None, new_signup_due_date=None, new_completion_date=None):
+    try:
+        task = DirTask.objects.get(pk=task_id)
+    except DirTask.DoesNotExist:
+        print('No such task to update')
+        return 0
+
+    if new_task_name:
+        task.task_name = new_task_name
+    if new_task_leader_id:
+        task.task_leader_id = new_task_leader_id
+    if new_task_description:
+        task.task_description = new_task_description
+    if new_signup_due_date:
+        task.signup_due_date = new_signup_due_date
+    if new_completion_date:
+        task.completion_date = new_completion_date
+
+    try:
+        task.save()
+    except:
+        print('Error occured while updating task data')
+        return -1
+    return 1
+
 def addEducationHistory(person_id, college_name, college_start_date, major, college_end_date=None):
+    existing = DirEducationHistory.objects.get(person_id=person_id, college_name=college_name, college_start_date=college_start_date)
+    if existing:
+        print('This education history already exists')
+        return 0
+    
     education = DirEducationHistory(person_id=person_id, college_name=college_name, college_start_date=college_start_date, major=major, college_end_date=college_end_date)
     try:
         education.save()
@@ -211,16 +208,47 @@ def removeEducationHistory(person_id, college_name, college_start_date):
     education = DirEducationHistory.objects.filter(person_id=person_id, college_name=college_name, college_start_date=college_start_date)
     if not education:
         print('No matching education history to remove')
-        return -1
+        return 0
     
     try:
         education.delete()
     except:
-        print('Error occured while removing education history')
+        print('Error occured while deleting education history')
+        return -1
+    return 1
+
+def updateEducationHistoryData(person_id, college_name, college_start_date, new_college_name=None, new_college_start_date=None, new_major=None, new_college_end_date=None):
+    try:
+        education = DirEducationHistory.objects.get(person_id=person_id, college_name=college_name, college_start_date=college_start_date)
+    except DirEducationHistory.DoesNotExist:
+        print('No such education history to update')
+        return 0
+    except DirEducationHistory.MultipleObjectsReturned:
+        print('Error in database, duplicate education histories')
+        return -1
+    
+    if new_college_name:
+        education.college_name = new_college_name
+    if new_college_start_date:
+        education.college_start_date = new_college_start_date
+    if new_major:
+        education.major = new_major
+    if new_college_end_date:
+        education.college_end_date = new_college_end_date
+
+    try:
+        education.save()
+    except:
+        print('Error occured while updating education history data')
         return -1
     return 1
 
 def addEmploymentHistory(person_id, employer_name, employment_start_date, job_title, employment_end_date=None):
+    existing = DirEmploymentHistory.objects.get(person_id=person_id, employer_name=employer_name, employment_start_date=employment_start_date)
+    if existing:
+        print('This employment history already exists')
+        return 0
+    
     employment = DirEmploymentHistory(person_id=person_id, employer_name=employer_name, employment_start_date=employment_start_date, job_title=job_title, employment_end_date=employment_end_date)
     try:
         employment.save()
@@ -233,12 +261,38 @@ def removeEmploymentHistory(person_id, employer_name, employment_start_date):
     employment = DirEmploymentHistory.objects.filter(person_id=person_id, employer_name=employer_name, employment_start_date=employment_start_date)
     if not employment:
         print('No matching employment history to remove')
-        return -1
+        return 0
     
     try:
         employment.delete()
     except:
-        print('Error occured while removing employment history')
+        print('Error occured while deleting employment history')
+        return -1
+    return 1
+
+def updateEmploymentHistoryData(person_id, employer_name, employment_start_date, new_employer_name=None, new_employment_start_date=None, new_job_title=None, new_employment_end_date=None):
+    try:
+        employment = DirEmploymentHistory.objects.get(person_id=person_id, employer_name=employer_name, employment_start_date=employment_start_date)
+    except DirEmploymentHistory.DoesNotExist:
+        print('No such employment history to update')
+        return 0
+    except DirEmploymentHistory.MultipleObjectsReturned:
+        print('Error in database, duplicate employment histories')
+        return -1
+    
+    if new_employer_name:
+        employment.employer_name = new_employer_name
+    if new_employment_start_date:
+        employment.employment_start_date = new_employment_start_date
+    if new_job_title:
+        employment.job_title = new_job_title
+    if new_employment_end_date:
+        employment.employment_end_date = new_employment_end_date
+
+    try:
+        employment.save()
+    except:
+        print('Error occured while updating employment history data')
         return -1
     return 1
 

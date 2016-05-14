@@ -19,6 +19,9 @@ class DirEducationHistory(models.Model):
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
 
+    def __str__(self):
+        return '%s at %s' % (self.person.user_name, self.college_name)
+
     class Meta:
         managed = False
         db_table = 'dir_education_history'
@@ -32,6 +35,9 @@ class DirEmploymentHistory(models.Model):
     employment_end_date = models.DateTimeField(blank=True, null=True)
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
+
+    def __str__(self):
+        return '%s at %s' % (self.person.user_name, self.employer_name)
 
     class Meta:
         managed = False
@@ -57,6 +63,9 @@ class DirPersonnel(models.Model):
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
 
+    def __str__(self):
+        return self.user_name
+
     class Meta:
         managed = False
         db_table = 'dir_personnel'
@@ -73,6 +82,9 @@ class DirTask(models.Model):
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
 
+    def __str__(self):
+        return 'Task %s: %s under %s' % (self.task_id, self.task_name, self.team.team_name)
+
     class Meta:
         managed = False
         db_table = 'dir_task'
@@ -84,6 +96,9 @@ class DirTaskAssignment(models.Model):
     comments = models.CharField(max_length=100, blank=True, null=True)
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
+
+    def __str__(self):
+        return 'Task %s assigned to %s' % (self.task.task_id, self.person.user_name)
 
     class Meta:
         managed = False
@@ -98,6 +113,9 @@ class DirTeam(models.Model):
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
 
+    def __str__(self):
+        return self.team_name
+
     class Meta:
         managed = False
         db_table = 'dir_team'
@@ -111,6 +129,9 @@ class DirTeamMember(models.Model):
     self_introduction = models.CharField(max_length=1000, blank=True, null=True)
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
+
+    def __str__(self):
+        return '%s is a member of %s' % (self.person.user_name, self.team.team_name)
 
     class Meta:
         managed = False
