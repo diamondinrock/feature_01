@@ -354,7 +354,7 @@ def getEmploymentHistoryByPersonnel(person_id):
 
     return data
 
-# education_history and employment_history are lists of dictionaries
+# education_history and employment_history most recent ones
 # dictionary are from above 2 functions
 def getPersonalProfileSettingsData(person_id):
     data = {}
@@ -365,8 +365,8 @@ def getPersonalProfileSettingsData(person_id):
     
     data['name'] = personneldata['name']
     data['city'] = personneldata['city']
-    data['education_history'] = getEducationHistoryByPersonnel(person_id)
-    data['employment_history'] = getEmploymentHistoryByPersonnel(person_id)
+    data['recent_education'] = getRecentEducation(person_id)
+    data['recent_employment'] = getRecentEmployment(person_id)
 
     return data
 
