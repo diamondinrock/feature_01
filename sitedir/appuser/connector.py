@@ -298,7 +298,7 @@ def updateEmploymentHistoryData(person_id, employer_name, employment_start_date,
 
 def getEducationHistoryByPersonnel(person_id):
     data = []
-    education_history = DirEducationHistory.objects.filter(person_id=person_id)
+    education_history = DirEducationHistory.objects.filter(person_id=person_id).order_by('-college_start_date')
     if not education_history:
         return data
     
@@ -317,9 +317,17 @@ def getEducationHistoryByPersonnel(person_id):
 
     return data
 
+def getRecentEmployment(person_id):
+    data = {}
+    employments = getEmploymentHistoryByPersonnel(person_id)
+    if not employments:
+        return data
+    data = employments[0]
+    return data
+
 def getEmploymentHistoryByPersonnel(person_id):
     data = []
-    employment_history = DirEmploymentHistory.objects.filter(person_id=person_id)
+    employment_history = DirEmploymentHistory.objects.filter(person_id=person_id).order_by('-employment_start_date')
     if not employment_history:
         return data
     
