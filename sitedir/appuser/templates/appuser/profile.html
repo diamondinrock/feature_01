@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://7xskcc.com2.z0.glb.clouddn.com/profile.css">
+    <title>Profile</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="nav">
+    Personal Profile
+</div>
+<header class="header">
+    <div class="profile-box">
+        <img class="profile-pic" src="http://i1.piimg.com/0ee6f202435c9203.jpg">
+    </div>
+    <div class="profile-name">
+        {{ personalprofile.first_name }} {{ ppersonalprofile.last_name }}
+    </div>
+    <div class="profile-occupation">
+        {{ personalprofile.occupation }}
+    </div>
+    <div class="profile-city">
+        {{ personalprofile.city }}
+    </div>
+    <div class="profile-setting">
+        setting
+    </div>
+</header>
+<div class="title-box">
+    <span class="dotted"></span>
+    <div class="title">Execution</div>
+</div>
+<div class="box">
+    <div class="execution-box">
+        <div class="row">
+            <div class="col-xs-6 execution-left">
+                <p class="execution-big">Group</p>
+                <p class="execution-small">{{ personalprofile.team_name }}</p>
+            </div>
+            <div class="col-xs-6 execution-right">
+                <p class="execution-big">Task</p>
+                <p class="execution-small">total:{{ personalprofile.num_total_tasks }}<em style="padding: 0px 10px;">|</em>doing:0</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="title-box">
+    <span class="dotted"></span>
+    <div class="title">Personal Introductions</div>
+</div>
+<div class="box">
+    <div class="content">
+        {{ personalprofile.self_introduction }}
+    </div>
+</div>
+<div class="title-box">
+    <span class="dotted"></span>
+    <div class="title">Education history</div>
+</div>
+<div class="box">
+    <div class="list-box">
+        <div class="list">
+            <span>Graduate School:</span>
+            <span class="word-right">{{ personalprofile.college_name }}</span>
+        </div>
+        <div class="list">
+            <span>Major:</span>
+            <span class="word-right">{{ personalprofile.major }}</span>
+        </div>
+    </div>
+</div>
+<div class="title-box">
+    <span class="dotted"></span>
+    <div class="title">Work Experience</div>
+</div>
+<div class="box">
+    <div class="list-box">
+        <div class="list">
+            <span>Company:</span>
+            <span class="word-right">{{ personalprofile.company }}</span>
+        </div>
+        <div class="list">
+            <span>Position:</span>
+            <span class="word-right">Project Manager</span>
+        </div>
+    </div>
+</div>
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="zhixingli">
+        <a href="#">
+            <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+            <span class="bottom-text">Execute</span>
+        </a>
+    </div>
+    <div class="my">
+        <a href="#">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            <span class="bottom-text">Profile</span>
+        </a>
+    </div>
+</nav>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>

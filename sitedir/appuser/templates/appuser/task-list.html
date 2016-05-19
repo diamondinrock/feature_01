@@ -21,21 +21,18 @@
                 href="http://browsehappy.com/" target="_blank">Click here to change!</a>！
     </div>
     <![endif]-->
+    <script src="http://7xskcc.com1.z0.glb.clouddn.com/task.js"></script>
 </head>
 <body>
 <div class="task-nav dropdown">
         <a href="#" class="dropdown-toggle task-nav-title" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">全部任务 <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-            <li><a href="#">工程组</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">市场组</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">文案组</a></li>
+        <ul id="category-list" class="dropdown-menu">
+
         </ul>
 </div>
 {% for task in tasksjson.0 %}
 <div class="task-list-box">
-    <div class="task-list-title-box">
+    <div class="task-list-title-box" data-category="{{ task.team_name }}">
         <span class="badge task-list-group">{{ task.team_name }}</span>
         <a href="task/{{ task.task_id }}" class="alltask-link"><span class="task-list-title">{{ task.task_name }}</span></a>
     </div>
