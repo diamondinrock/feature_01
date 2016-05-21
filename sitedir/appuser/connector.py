@@ -524,3 +524,46 @@ def getPersonalProfile(personID):
     except DirTask.DoesNotExist:
         personalprofile['completed_tasks'] = None
 
+def joinTeam(personID, teamID, contact_info, self_intro):
+    try:
+        person = DirTeamMember.objects.get(person_id__exact=personID, team_id__exact=teamID)
+        return "Already in team"
+    except DirTeamMember.DoesNotExist:
+        person = DirTeamMember(person_id=personID, team_id=teamID, member_status="Pending", contact_information=contact_info, self_introduction=self_intro)
+        person.save()
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
