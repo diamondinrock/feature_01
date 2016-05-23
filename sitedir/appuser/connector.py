@@ -363,8 +363,7 @@ def getPersonalProfileSettingsData(person_id):
         print('No such personnel to get settings data')
         return data
     
-    data['name'] = personneldata['name']
-    data['city'] = personneldata['city']
+    data.update(personneldata)
     data['recent_education'] = getRecentEducation(person_id)
     data['recent_employment'] = getRecentEmployment(person_id)
 
