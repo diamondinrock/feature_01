@@ -1,0 +1,229 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'appuser/style.css' %}" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    {% if editable == 1 %}
+    <script>
+    function validate() {
+        $('form input').each(function(n, element) {
+            if ($(element).val() == '') {
+                return false;
+            }
+        });
+        return true;
+    }
+        function edit(currentElement) {
+            document.getElementById("modalheading").innerHTML = "Edit Education History";
+            document.getElementById("footer").innerHTML = '<button type="button" id = "delete"class="btn btn-danger"data-dismiss="modal" >Delete</button> <button type="button" id ="save"class="btn btn-default" data-dismiss="modal"  >Save</button>';
+            $("#cname").val($(currentElement).find("#collegeid").html());
+            $("#educationid").val($(currentElement).find("#id").html());
+            $("#major").val($(currentElement).find("#majorid").html());
+            $("#studentname").val($(currentElement).find("#studentnameid").html());
+            var start = $(currentElement).find("#startdateid").html();
+            var startdate = new Date(start);
+            $("#startdate").val(startdate.toISOString().slice(0, 10).replace(/-/g, "-"));
+            var end = $(currentElement).find("#enddateid").html();
+            var enddate = new Date(end);
+            $("#enddate").val(enddate.toISOString().slice(0, 10).replace(/-/g, "-"));
+        }
+
+        function add() {
+            $("#cname").val("");
+            $("#major").val("");
+            $("#studentname").val("");
+            $("#startdate").val("");
+            $("#enddate").val("");
+            document.getElementById("footer").innerHTML = ' <button type="button" class="btn btn-default" data-dismiss="modal" id="addbutton" >Add</button>';
+            document.getElementById("modalheading").innerHTML = "Add Education History";
+        }
+    </script>
+    {% endif %}
+</head>
+
+<body>
+
+
+
+    <div class="page-heading media">
+
+        <div class="media-body">
+            <h4 class="media-heading"style="font-size:1.1em">Education History</h4>
+
+        </div>
+        {% if editable == 1%}
+        <div class="media-right">
+            <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal" onclick="add();"> Add
+            </button>
+        </div>
+        {% endif %}
+
+
+
+
+
+    </div>
+    {% if editable == 1 %}
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header page-heading">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 id="modalheading" class="modal-title">Add Education History</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="form">{% csrf_token %}
+                    <input type="hidden" id="educationid">
+                        <div class="form-group">
+                            <label for="cname">College:</label>
+                            <input type="text" class="form-control" id="cname" required >
+                        </div>
+                        <div class="form-group">
+                            <label for="major">Major:</label>
+                            <input type="text" class="form-control" id="major" required >
+                        </div>
+                        <div class="form-group">
+                            <label for="startdate">Start Date:</label>
+                            <input class="form-control" type="date" id="startdate" required >
+                        </div>
+                        <div class="form-group">
+                            <label for="enddate">End Date:</label>
+                            <input class="form-control" type="date" id="enddate" required >
+                        </div>
+                        <div class="form-group">
+                            <label for="studentname">Student Name:</label>
+                            <input type="text" class="form-control" id="studentname" required >
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer" id="footer">
+                    <button class="btn btn-default" data-dismiss="modal" id="addbutton">Add</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% endif %}
+
+    <ul class="list-group" style=" padding-left:0px;
+    margin-left: 0px;">
+        {% for entry in personaleducation %}
+        <li class="list-group-item" style="padding:0px;">
+            
+            <a {% if editable == 1 %} onclick='edit(this);' data-toggle="modal" data-target="#myModal" {% endif%} class="list-group-item" style="margin:0px;padding:0px;border: none;!important">
+                <div class="media" style="padding:2%;border: none;!important">
+
+
+                    <div class="media-body">
+                            <p id ="id"hidden>{{entry.educationid}}</p>
+                        <h2 class="media-heading" style="font-size: 18px; font-weight: bolder;color:#337ab7;"><b id="collegeid">{{entry.college_name}}</b></h4>
+
+                        <p style="color:#337ab7;" > Major: <span id="majorid">{{entry.major}}</span></p>
+                    </div>
+                    <div class="media-right"style="white-space:nowrap;font-size:1.09em;color:#337ab7;">
+                        Student Name: <span id="studentnameid">{{entry.student_name}}</span><br>
+     <span id="startdateid">{{entry.college_start_date}}</span> - <span id="enddateid">{{entry.college_end_date}}</span>
+    </div>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+
+    </ul>
+
+    <div class="footer ">
+        <div class="footer-contents container h-list">
+            <a class="h-list-item" href="#">
+                <i class="glyphicon glyphicon-flag fa fa-user"></i>
+                <p>Execute</p>
+            </a>
+            <a class="h-list-item" href="#">
+                <i class="glyphicon glyphicon-user fa fa-user"></i>
+                <p>Profile</p>
+            </a>
+        </div>
+    </div>
+    {% if editable == 1 %}
+    <script type = "text/javascript">
+  
+    $(document).ready(function() {
+        console.log("sdds");
+        
+       $('#myModal').on('click','#addbutton', function (e) {
+          
+          $.ajax({
+                type: 'POST',
+                url: 'education-save',
+                data: {
+                    special: 1,
+                    id:  $('#educationid').val(),
+                    college: $('#cname').val(),
+                    major: $('#major').val(),
+                    starttimefield: $('#startdate').val(),
+                    endtimefield: $('#enddate').val(),
+                    studentname: $('#studentname').val(),
+                    csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val()
+                },
+                sucess: function() {
+
+                }
+            });
+           
+       
+        });
+        $('#myModal').on('click','#delete', function (e) {
+            $.ajax({
+                type: 'POST',
+                url: 'education-save',
+                data: {
+                    special: 5,
+                    id:  $('#educationid').val(),
+                    csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val()
+                },
+                sucess: function() {
+
+                }
+            });
+        });
+         $('#myModal').on('click','#save', function (e) {
+            
+            $.ajax({
+                type: 'POST',
+                url: 'education-save',
+                data: {
+                    special: 27,
+                    id:  $('#educationid').val(),
+                    college: $('#cname').val(),
+                    major: $('#major').val(),
+                    starttimefield: $('#startdate').val(),
+                    endtimefield: $('#enddate').val(),
+                    studentname: $('#studentname').val(),
+                    csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val()
+                },
+                sucess: function() {
+
+                }
+            });
+             
+        });
+        });
+        
+
+       
+
+
+            
+    
+</script>
+{% endif %}
+</body>
+
+</html>
