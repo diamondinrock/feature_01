@@ -1,3 +1,7 @@
+body{
+	letter-spacing: 1px; 
+	font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei","Hiragino Sans GB","Hiragino Sans GB W3",FontAwesome,sans-serif;
+}
 body h1 {
 	font-size: 1.2em;
 }
@@ -135,4 +139,11 @@ body a {
 .footer p {
   line-height: 0px;
   padding-top: 10px;
+}
+.page-heading{
+	color: #fff;
+    background: #0e90d2;
+    font-size:1.6em;
+    text-align: center;
+    padding: 10px 25px 5px;
 }
