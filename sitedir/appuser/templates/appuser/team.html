@@ -64,10 +64,33 @@
         <div class="panel-heading" style="background-color:#f2f0f2;"><b><span class="glyphicon glyphicon-tasks" style="color:black"></span> Tasks</b></div>
         <div class="panel-body">
             <ul class="list-group">
+                <div class="accordion-group">
+                <div class="accordion-heading">
                 {%for task in teamjson.0.team_tasks%}
                 
+                
+                {% if forloop.counter == 4 %}
+                </div>
+                <div id="collapseTwo" class="accordion-body collapse">
+                <div class="accordion-inner">
+                {% endif %}
                 <a href="/appuser/task/{{ task.0 }}/"><li class="list-group-item"style="border-radius: 0">{{task.1}}</li></a>
+                {% if forloop.last %}
+                {% if forloop.counter > 4 %}
+                </div>
+                </div>
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+<li style="text-align:center; padding:2%;  list-style-type: none;"><span class="glyphicon glyphicon-menu-down"></span></li>
+</a>
+                {% endif %}
+                 </div>
+                {% endif %}
+               
+                
                 {% endfor %}
+             
+                
+                
             </ul>
         </div>
     </div>
