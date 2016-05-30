@@ -12,10 +12,11 @@ from django.db import models
 
 class DirEducationHistory(models.Model):
     person = models.ForeignKey('DirPersonnel', models.DO_NOTHING)
+    id = models.AutoField(primary_key=True)
     college_name = models.CharField(max_length=100)
-    college_start_date = models.DateTimeField()
+    college_start_date = models.DateField()
     major = models.CharField(max_length=45)
-    college_end_date = models.DateTimeField(blank=True, null=True)
+    college_end_date = models.DateField(blank=True, null=True)
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
 
