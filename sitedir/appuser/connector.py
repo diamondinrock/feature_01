@@ -216,7 +216,18 @@ def removeEducationHistory(person_id, college_name, college_start_date):
         print('Error occured while deleting education history')
         return -1
     return 1
-
+def removeEducationHistoryUsingID(person_id,education_id):
+    education = DirEducationHistory.objects.filter(pk=education_id,person_id = person_id)
+    if not education:
+        print('No matching education history to remove')
+        return 0
+    
+    try:
+        education.delete()
+    except:
+        print('Error occured while deleting education history')
+        return -1
+    return 1
 def updateEducationHistoryData(person_id, college_name, college_start_date, new_college_name=None, new_college_start_date=None, new_major=None, new_college_end_date=None):
     try:
         education = DirEducationHistory.objects.get(person_id=person_id, college_name=college_name, college_start_date=college_start_date)
@@ -242,7 +253,31 @@ def updateEducationHistoryData(person_id, college_name, college_start_date, new_
         print('Error occured while updating education history data')
         return -1
     return 1
+def updateEducationHistoryDataByID(person_id,education_id,new_college_name=None, new_college_start_date=None, new_major=None, new_college_end_date=None):
+    try:
+        education = DirEducationHistory.objects.get(person_id=person_id, pk = education_id)
+    except DirEducationHistory.DoesNotExist:
+        print('No such education history to update')
+        return 0
+    except DirEducationHistory.MultipleObjectsReturned:
+        print('Error in database, duplicate education histories')
+        return -1
+    
+    if new_college_name:
+        education.college_name = new_college_name
+    if new_college_start_date:
+        education.college_start_date = new_college_start_date
+    if new_major:
+        education.major = new_major
+    if new_college_end_date:
+        education.college_end_date = new_college_end_date
 
+    try:
+        education.save()
+    except:
+        print('Error occured while updating education history data')
+        return -1
+    return 1
 def addEmploymentHistory(person_id, employer_name, employment_start_date, job_title, employment_end_date=None):
     existing = DirEmploymentHistory.objects.get(person_id=person_id, employer_name=employer_name, employment_start_date=employment_start_date)
     if existing:
@@ -363,8 +398,7 @@ def getPersonalProfileSettingsData(person_id):
         print('No such personnel to get settings data')
         return data
     
-    data['name'] = personneldata['name']
-    data['city'] = personneldata['city']
+    data.update(personneldata)
     data['recent_education'] = getRecentEducation(person_id)
     data['recent_employment'] = getRecentEmployment(person_id)
 

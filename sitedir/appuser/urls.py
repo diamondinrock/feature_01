@@ -12,4 +12,8 @@ urlpatterns = [
     url(r'^setpersonid/(?P<personid>\d+)/$', views.setpersonid, name='setpersonid'),
     url(r'^getpersonid', views.getpersonid, name='getpersonid'),
     url(r'^profile/(?P<personid>\d+)/$', views.getPersonalProfile, name='getPersonalProfile'),
+     url(r'^education-history/(?P<personid>\d+)/$', views.EducationHistory, name='getPersonalProfile'),
+    url(r'^profile-settings', views.profilesettings, name='profile-settings'),
+    url(r'^profile-save', views.savesettings, name='profile-settings'),
+    url(r'education-save', views.educationhandle, name='handle'),
 ]

@@ -3,13 +3,14 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="{% static 'appuser/style.css' %}" />
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 
-<body>
+<body >
 
 
     <div class="header">
@@ -18,7 +19,10 @@
             <div class="panel-body" style="padding: 0px;">
             <div class="media" style="padding:2%; background-color:#594f59;border:none;">
                 <div class="media-left">
-                    <button type="button" class="btn btn-default btn-circle">{{teamjson.0.team_name.0}}</button>
+                    <div style=" height: 50px;
+    width: 50px;
+    border-radius: 50px;
+    -webkit-border-radius: 50px;text-align:center;vertical-align:middle;font-size:100%;background-color:#738ffe;line-height: 50px;color:white;font-weight:bolder;">{{teamjson.0.team_name.0}}</div>
                 </div>
 
                 <div class="media-body">
@@ -61,10 +65,33 @@
         <div class="panel-heading" style="background-color:#f2f0f2;"><b><span class="glyphicon glyphicon-tasks" style="color:black"></span> Tasks</b></div>
         <div class="panel-body">
             <ul class="list-group">
+                <div class="accordion-group">
+                <div class="accordion-heading">
                 {%for task in teamjson.0.team_tasks%}
                 
+                
+                {% if forloop.counter == 4 %}
+                </div>
+                <div id="collapseTwo" class="accordion-body collapse">
+                <div class="accordion-inner">
+                {% endif %}
                 <a href="/appuser/task/{{ task.0 }}/"><li class="list-group-item"style="border-radius: 0">{{task.1}}</li></a>
+                {% if forloop.last %}
+                {% if forloop.counter > 4 %}
+                </div>
+                </div>
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+<li style="text-align:center; padding:2%;  list-style-type: none;"><span class="glyphicon glyphicon-menu-down"></span></li>
+</a>
+                {% endif %}
+                 </div>
+                {% endif %}
+               
+                
                 {% endfor %}
+             
+                
+                
             </ul>
         </div>
     </div>
