@@ -125,7 +125,12 @@ class DirTeam(models.Model):
 class DirTeamMember(models.Model):
     person = models.ForeignKey(DirPersonnel, models.DO_NOTHING)
     team = models.ForeignKey(DirTeam, models.DO_NOTHING)
-    member_status = models.CharField(max_length=45, blank=True, null=True)
+    MEMBER_STATUS_CHOICES = (
+        ('Accept', 'Accepted'),
+        ('Reject', 'Rejected'),
+        ('Pending', 'Pending'),
+    )
+    member_status = models.CharField(max_length=45,choices=MEMBER_STATUS_CHOICES, default='Pending')
     contact_information = models.CharField(max_length=80, blank=True, null=True)
     self_introduction = models.CharField(max_length=1000, blank=True, null=True)
     creation_date = models.DateTimeField()
