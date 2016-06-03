@@ -565,7 +565,18 @@ def joinTeam(personID, teamID, contact_info, self_intro):
     except DirTeamMember.DoesNotExist:
         person = DirTeamMember(person_id=personID, team_id=teamID, member_status="Pending", contact_information=contact_info, self_introduction=self_intro)
         person.save()
-        
+
+def checkMemberStatus(personID, teamID):
+    try:
+        person = DirTeamMember.objects.get(person_id__exact=personID, team_id__exact=teamID)
+        return person.member_status
+    except DirTeamMember.DoesNotExist:
+        verifyperson = DirPersonnel.objects.get(person_id__exact=personID)
+        if verifyperson.first_name is None or verifyperson.last_name is None or verifyperson.city is None or verifyperson.province_state is None or verifyperson.country is None or verifyperson.occupation is None or verifyperson.self_introduction is None:
+            return "More"
+        else:
+            return "New"
+            
         
         
         
