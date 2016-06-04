@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://7xskcc.com1.z0.glb.clouddn.com/form.css">
+    <title>Profile</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="nav">
+    加入我们
+</div>
+<header>
+    <p>你好！欢迎加入我们的项目组</p>
+    <p>填写以下信息加入我们！</p>
+</header>
+<form action="/jointeam/" method="post">
+    <div class="form-group">
+        <label for="contact_info">联系方式</label>
+        <input class="form-control" id="contact_info" placeholder="请输入QQ或微信" name="contact_info">
+    </div>
+    <div class="form-group">
+        <label for="self_intro">介绍一下你自己</label>
+        <textarea rows="7" class="form-control" id="self_intro" placeholder="例如：我擅长策划文案，希望在执行力当中学习到产品知识" name="self_intro"></textarea>
+    </div>
+    <button type="submit" class="btn btn-default join-btn">提交资料</button>
+</form>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>
