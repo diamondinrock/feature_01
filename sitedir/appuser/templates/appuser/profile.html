@@ -34,7 +34,7 @@
         {{ personalprofile.city }}
     </div>
     <div class="profile-setting">
-        setting
+        <a href="{% url 'profile-settings' %}">setting</a>
     </div>
 </header>
 <div class="title-box">
@@ -98,7 +98,7 @@
 </div>
 <nav class="navbar navbar-default navbar-fixed-bottom">
     <div class="zhixingli">
-        <a href="#">
+        <a href="{% url 'index' %}">
             <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
             <span class="bottom-text">Execute</span>
         </a>
