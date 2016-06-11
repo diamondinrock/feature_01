@@ -16,4 +16,6 @@ urlpatterns = [
     url(r'^profile-settings', views.profilesettings, name='profile-settings'),
     url(r'^profile-save', views.savesettings, name='profile-settings'),
     url(r'education-save', views.educationhandle, name='handle'),
+    url(r'employment-save', views.employmenthandle, name='handles'),
+    url(r'^employment-history/(?P<personid>\d+)/$', views.EmploymentHistory, name='getPersonalProfile'),
 ]
