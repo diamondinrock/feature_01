@@ -109,7 +109,7 @@ def getPersonnelData(person_id):
     data['occupation'] = personnel.occupation
     data['creation_date'] = personnel.creation_date
     data['modified_date'] = personnel.modified_date
-
+    data['id'] = personnel.person_id
     attr = ['openid', 'header_url', 'middle_name', 'gender', 'province_state', 'country', 'email_address', 'self_introduction', 'executive_team_member']
     for field in attr:
         value = getattr(personnel, field)
@@ -459,6 +459,7 @@ def getTeambyID(teamID):
     try:
         leader = DirPersonnel.objects.get(dirteam__team_id__exact=teamID)
         teamdetail['team_leader']=leader.user_name
+        teamdetail['leadid'] = leader.person_id
     except DirPersonnel.DoesNotExist:
         teamdetail['team_leader']= 'No Leader'
 
@@ -467,7 +468,10 @@ def getTeambyID(teamID):
     members=[]
     teammembers = DirPersonnel.objects.filter(dirteammember__team_id__exact=teamID)
     for user in teammembers:
-        members.append(user.user_name)
+        temp = []
+        temp.append(user.user_name)
+        temp.append(user.person_id)
+        members.append(temp)
     teamdetail['team_members']=members
    
    #Get number of team members
