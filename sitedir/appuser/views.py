@@ -63,20 +63,12 @@ def getpersonid(request):
         context = { 'personid':'No user set' }
     return render(request, 'appuser/getpersonid.html',context)
     
-def getPersonalProfile(request):
-    if 'person_id' in request.session:
-        context = { 'personaleducation':connector.getEducationHistoryByPersonnel(request.session['person_id'])}
-        context = { 'personalemployment':connector.getEmploymentHistoryByPersonnel(request.session['person_id'])}
-        context = { 'personalprofile':connector.getPersonnelData(request.session['person_id'])}
-    else:
-        context = { 'personalprofile':'No user set' }
-    return render(request, 'appuser/profile.html',context)
-def getPersonalProfile(request,personid):
+def getProf(request,personid):
     context = { 'personalprofile':connector.getPersonnelData(personid)}
     context = { 'personalemployment':connector.getEmploymentHistoryByPersonnel(personid)}
     context = { 'personalprofile':connector.getPersonnelData(personid)}
     return render(request, 'appuser/profile.html',context)
-def getProf(request):
+def getPersonalProfile(request):
     if 'person_id' in request.session:
         context = { 'personalprofile':connector.getPersonnelData(request.session['person_id'])}
         context = { 'personalemployment':connector.getEmploymentHistoryByPersonnel(request.session['person_id'])}
