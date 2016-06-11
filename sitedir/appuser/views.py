@@ -65,6 +65,8 @@ def getpersonid(request):
     
 def getPersonalProfile(request):
     if 'person_id' in request.session:
+        context = { 'personaleducation':connector.getEducationHistoryByPersonnel(request.session['person_id'])}
+        context = { 'personalemployment':connector.getEmploymentHistoryByPersonnel(request.session['person_id'])}
         context = { 'personalprofile':connector.getPersonnelData(request.session['person_id'])}
     else:
         context = { 'personalprofile':'No user set' }
