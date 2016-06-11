@@ -304,6 +304,18 @@ def removeEmploymentHistory(person_id, employer_name, employment_start_date):
         print('Error occured while deleting employment history')
         return -1
     return 1
+def removeEmploymentHistoryByID(person_id, employmentid):
+    employment = DirEmploymentHistory.objects.filter(person_id=person_id, id = employmentid)
+    if not employment:
+        print('No matching employment history to remove')
+        return 0
+    
+    try:
+        employment.delete()
+    except:
+        print('Error occured while deleting employment history')
+        return -1
+    return 1
 
 def updateEmploymentHistoryData(person_id, employer_name, employment_start_date, new_employer_name=None, new_employment_start_date=None, new_job_title=None, new_employment_end_date=None):
     try:
@@ -330,7 +342,31 @@ def updateEmploymentHistoryData(person_id, employer_name, employment_start_date,
         print('Error occured while updating employment history data')
         return -1
     return 1
+def updateEmploymentHistoryDataByID(person_id, employid , new_employer_name=None, new_employment_start_date=None, new_job_title=None, new_employment_end_date=None):
+    try:
+        employment = DirEmploymentHistory.objects.get(person_id=person_id, id = employid)
+    except DirEmploymentHistory.DoesNotExist:
+        print('No such employment history to update')
+        return 0
+    except DirEmploymentHistory.MultipleObjectsReturned:
+        print('Error in database, duplicate employment histories')
+        return -1
+    
+    if new_employer_name:
+        employment.employer_name = new_employer_name
+    if new_employment_start_date:
+        employment.employment_start_date = new_employment_start_date
+    if new_job_title:
+        employment.job_title = new_job_title
+    if new_employment_end_date:
+        employment.employment_end_date = new_employment_end_date
 
+    try:
+        employment.save()
+    except:
+        print('Error occured while updating employment history data')
+        return -1
+    return 1
 def getRecentEducation(person_id):
     data = {}
     educations = getEducationHistoryByPersonnel(person_id)
