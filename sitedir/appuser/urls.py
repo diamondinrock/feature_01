@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^task/(?P<taskid>\d+)/$', views.taskdetail, name='taskdetail'),
     url(r'^setpersonid/(?P<personid>\d+)/$', views.setpersonid, name='setpersonid'),
     url(r'^getpersonid', views.getpersonid, name='getpersonid'),
+    url(r'^profile$',views.getProf,name = "no"),
     url(r'^profile/(?P<personid>\d+)/$', views.getPersonalProfile, name='getPersonalProfile'),
      url(r'^education-history/(?P<personid>\d+)/$', views.EducationHistory, name='getPersonalProfile'),
     url(r'^profile-settings', views.profilesettings, name='profile-settings'),
