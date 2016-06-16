@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -117,6 +118,13 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+LOCALE_PATHS = [ os.path.join(PROJECT_PATH, '../locale'), ]
+LANGUAGES = [
+    ('en', 'English'),
+    ('zh', 'Chinese'),
+]
 
 
 # Static files (CSS, JavaScript, Images)
