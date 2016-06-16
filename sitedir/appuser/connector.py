@@ -109,7 +109,7 @@ def getPersonnelData(person_id):
     data['occupation'] = personnel.occupation
     data['creation_date'] = personnel.creation_date
     data['modified_date'] = personnel.modified_date
-
+    data['id'] = personnel.person_id
     attr = ['openid', 'header_url', 'middle_name', 'gender', 'province_state', 'country', 'email_address', 'self_introduction', 'executive_team_member']
     for field in attr:
         value = getattr(personnel, field)
@@ -216,7 +216,18 @@ def removeEducationHistory(person_id, college_name, college_start_date):
         print('Error occured while deleting education history')
         return -1
     return 1
-
+def removeEducationHistoryUsingID(person_id,education_id):
+    education = DirEducationHistory.objects.filter(pk=education_id,person_id = person_id)
+    if not education:
+        print('No matching education history to remove')
+        return 0
+    
+    try:
+        education.delete()
+    except:
+        print('Error occured while deleting education history')
+        return -1
+    return 1
 def updateEducationHistoryData(person_id, college_name, college_start_date, new_college_name=None, new_college_start_date=None, new_major=None, new_college_end_date=None):
     try:
         education = DirEducationHistory.objects.get(person_id=person_id, college_name=college_name, college_start_date=college_start_date)
@@ -242,7 +253,31 @@ def updateEducationHistoryData(person_id, college_name, college_start_date, new_
         print('Error occured while updating education history data')
         return -1
     return 1
+def updateEducationHistoryDataByID(person_id,education_id,new_college_name=None, new_college_start_date=None, new_major=None, new_college_end_date=None):
+    try:
+        education = DirEducationHistory.objects.get(person_id=person_id, pk = education_id)
+    except DirEducationHistory.DoesNotExist:
+        print('No such education history to update')
+        return 0
+    except DirEducationHistory.MultipleObjectsReturned:
+        print('Error in database, duplicate education histories')
+        return -1
+    
+    if new_college_name:
+        education.college_name = new_college_name
+    if new_college_start_date:
+        education.college_start_date = new_college_start_date
+    if new_major:
+        education.major = new_major
+    if new_college_end_date:
+        education.college_end_date = new_college_end_date
 
+    try:
+        education.save()
+    except:
+        print('Error occured while updating education history data')
+        return -1
+    return 1
 def addEmploymentHistory(person_id, employer_name, employment_start_date, job_title, employment_end_date=None):
     existing = DirEmploymentHistory.objects.get(person_id=person_id, employer_name=employer_name, employment_start_date=employment_start_date)
     if existing:
@@ -259,6 +294,18 @@ def addEmploymentHistory(person_id, employer_name, employment_start_date, job_ti
 
 def removeEmploymentHistory(person_id, employer_name, employment_start_date):
     employment = DirEmploymentHistory.objects.filter(person_id=person_id, employer_name=employer_name, employment_start_date=employment_start_date)
+    if not employment:
+        print('No matching employment history to remove')
+        return 0
+    
+    try:
+        employment.delete()
+    except:
+        print('Error occured while deleting employment history')
+        return -1
+    return 1
+def removeEmploymentHistoryByID(person_id, employmentid):
+    employment = DirEmploymentHistory.objects.filter(person_id=person_id, id = employmentid)
     if not employment:
         print('No matching employment history to remove')
         return 0
@@ -295,7 +342,31 @@ def updateEmploymentHistoryData(person_id, employer_name, employment_start_date,
         print('Error occured while updating employment history data')
         return -1
     return 1
+def updateEmploymentHistoryDataByID(person_id, employid , new_employer_name=None, new_employment_start_date=None, new_job_title=None, new_employment_end_date=None):
+    try:
+        employment = DirEmploymentHistory.objects.get(person_id=person_id, id = employid)
+    except DirEmploymentHistory.DoesNotExist:
+        print('No such employment history to update')
+        return 0
+    except DirEmploymentHistory.MultipleObjectsReturned:
+        print('Error in database, duplicate employment histories')
+        return -1
+    
+    if new_employer_name:
+        employment.employer_name = new_employer_name
+    if new_employment_start_date:
+        employment.employment_start_date = new_employment_start_date
+    if new_job_title:
+        employment.job_title = new_job_title
+    if new_employment_end_date:
+        employment.employment_end_date = new_employment_end_date
 
+    try:
+        employment.save()
+    except:
+        print('Error occured while updating employment history data')
+        return -1
+    return 1
 def getRecentEducation(person_id):
     data = {}
     educations = getEducationHistoryByPersonnel(person_id)
@@ -354,7 +425,7 @@ def getEmploymentHistoryByPersonnel(person_id):
 
     return data
 
-# education_history and employment_history are lists of dictionaries
+# education_history and employment_history most recent ones
 # dictionary are from above 2 functions
 def getPersonalProfileSettingsData(person_id):
     data = {}
@@ -363,10 +434,9 @@ def getPersonalProfileSettingsData(person_id):
         print('No such personnel to get settings data')
         return data
     
-    data['name'] = personneldata['name']
-    data['city'] = personneldata['city']
-    data['education_history'] = getEducationHistoryByPersonnel(person_id)
-    data['employment_history'] = getEmploymentHistoryByPersonnel(person_id)
+    data.update(personneldata)
+    data['recent_education'] = getRecentEducation(person_id)
+    data['recent_employment'] = getRecentEmployment(person_id)
 
     return data
 
@@ -389,6 +459,7 @@ def getTeambyID(teamID):
     try:
         leader = DirPersonnel.objects.get(dirteam__team_id__exact=teamID)
         teamdetail['team_leader']=leader.user_name
+        teamdetail['leadid'] = leader.person_id
     except DirPersonnel.DoesNotExist:
         teamdetail['team_leader']= 'No Leader'
 
@@ -397,7 +468,10 @@ def getTeambyID(teamID):
     members=[]
     teammembers = DirPersonnel.objects.filter(dirteammember__team_id__exact=teamID)
     for user in teammembers:
-        members.append(user.user_name)
+        temp = []
+        temp.append(user.user_name)
+        temp.append(user.person_id)
+        members.append(temp)
     teamdetail['team_members']=members
    
    #Get number of team members
@@ -524,3 +598,57 @@ def getPersonalProfile(personID):
     except DirTask.DoesNotExist:
         personalprofile['completed_tasks'] = None
 
+def joinTeam(personID, teamID, contact_info, self_intro):
+    try:
+        person = DirTeamMember.objects.get(person_id__exact=personID, team_id__exact=teamID)
+        return "Already in team"
+    except DirTeamMember.DoesNotExist:
+        person = DirTeamMember(person_id=personID, team_id=teamID, member_status="Pending", contact_information=contact_info, self_introduction=self_intro)
+        person.save()
+
+def checkMemberStatus(personID, teamID):
+    try:
+        person = DirTeamMember.objects.get(person_id__exact=personID, team_id__exact=teamID)
+        return person.member_status
+    except DirTeamMember.DoesNotExist:
+        verifyperson = DirPersonnel.objects.get(person_id__exact=personID)
+        if verifyperson.first_name is None or verifyperson.last_name is None or verifyperson.city is None or verifyperson.province_state is None or verifyperson.country is None or verifyperson.occupation is None or verifyperson.self_introduction is None:
+            return "More"
+        else:
+            return "New"
+            
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

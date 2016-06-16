@@ -12,10 +12,11 @@ from django.db import models
 
 class DirEducationHistory(models.Model):
     person = models.ForeignKey('DirPersonnel', models.DO_NOTHING)
+    id = models.AutoField(primary_key=True)
     college_name = models.CharField(max_length=100)
-    college_start_date = models.DateTimeField()
+    college_start_date = models.DateField()
     major = models.CharField(max_length=45)
-    college_end_date = models.DateTimeField(blank=True, null=True)
+    college_end_date = models.DateField(blank=True, null=True)
     creation_date = models.DateTimeField()
     modified_date = models.DateTimeField()
 
@@ -124,7 +125,12 @@ class DirTeam(models.Model):
 class DirTeamMember(models.Model):
     person = models.ForeignKey(DirPersonnel, models.DO_NOTHING)
     team = models.ForeignKey(DirTeam, models.DO_NOTHING)
-    member_status = models.CharField(max_length=45, blank=True, null=True)
+    MEMBER_STATUS_CHOICES = (
+        ('Accept', 'Accepted'),
+        ('Reject', 'Rejected'),
+        ('Pending', 'Pending'),
+    )
+    member_status = models.CharField(max_length=45,choices=MEMBER_STATUS_CHOICES, default='Pending')
     contact_information = models.CharField(max_length=80, blank=True, null=True)
     self_introduction = models.CharField(max_length=1000, blank=True, null=True)
     creation_date = models.DateTimeField()
