@@ -25,7 +25,7 @@
         <img class="profile-pic" src="http://i1.piimg.com/0ee6f202435c9203.jpg">
     </div>
     <div class="profile-name">
-        {{ personalprofile.first_name }} {{ ppersonalprofile.last_name }}
+        {{ personalprofile.first_name }} {{ personalprofile.last_name }}
     </div>
     <div class="profile-occupation">
         {{ personalprofile.occupation }}
@@ -33,9 +33,11 @@
     <div class="profile-city">
         {{ personalprofile.city }}
     </div>
+        {% if displaySetting == 'true' %}
     <div class="profile-setting">
         <a href="/appuser/profile-settings">setting</a>
     </div>
+        {% endif %}
 </header>
 <div class="title-box">
     <span class="dotted"></span>

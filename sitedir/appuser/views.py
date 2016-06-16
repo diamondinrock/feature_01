@@ -64,15 +64,22 @@ def getpersonid(request):
     return render(request, 'appuser/getpersonid.html',context)
     
 def getProf(request,personid):
-    context = { 'personalprofile':connector.getPersonnelData(personid)}
-    context = { 'personalemployment':connector.getEmploymentHistoryByPersonnel(personid)}
-    context = { 'personalprofile':connector.getPersonnelData(personid)}
+    context = {
+                'personalprofile':connector.getPersonnelData(personid), 
+                'personalemployment':connector.getEmploymentHistoryByPersonnel(personid), 
+                'personaleducation':connector.getEducationHistoryByPersonnel(personid),
+              }
+    if personid == request.session['person_id']:
+        context['displaySetting'] = 'true'
     return render(request, 'appuser/profile.html',context)
 def getPersonalProfile(request):
     if 'person_id' in request.session:
-        context = { 'personalprofile':connector.getPersonnelData(request.session['person_id'])}
-        context = { 'personalemployment':connector.getEmploymentHistoryByPersonnel(request.session['person_id'])}
-        context = { 'personalprofile':connector.getPersonnelData(request.session['person_id'])}
+        context = { 
+                    'personalprofile':connector.getPersonnelData(request.session['person_id']),
+                    'personalemployment':connector.getEmploymentHistoryByPersonnel(request.session['person_id']),
+                    'personaleducation':connector.getEducationHistoryByPersonnel(request.session['person_id']),
+                    'displaySetting':'true',
+                  }
     else:
         context = { 'personalprofile':'No user set' }
     return render(request, 'appuser/profile.html',context)
