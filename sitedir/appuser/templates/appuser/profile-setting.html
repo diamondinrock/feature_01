@@ -1,5 +1,5 @@
-{% load l10n %}
 {% load staticfiles %}
+{% load i18n %}
 <!DOCTYPE html>
 
 <head>
@@ -372,16 +372,16 @@ function print_state(state_id, state_index){
 
 
     <div class="page-heading"style="font-weight:bolder;">
-        <span style="color:white;font-weight:bolder;"><h1>Profile Settings</h1></span>
+        <span style="color:white;font-weight:bolder;"><h1>{% trans "Profile Settings" %}</h1></span>
     </div>
     <form id="form">{% csrf_token %}
         <ul class="list-group">
             <li class="list-group-item">
-                <h1><span class="dotted"></span><b style="padding-left:1%;">General Information</b></h1>
+                <h1><span class="dotted"></span><b style="padding-left:1%;">{% trans "General Information" %}</b></h1>
     </li>
             <li class="list-group-item">
                 <div class="form-group">
-                    <label for="namefield" class="control-label col-sm-2">First Name</label>
+                    <label for="namefield" class="control-label col-sm-2">{% trans "First Name" %}</label>
                     <div class="col-sm-10"style="padding-right:0px;">
                         <span class="spann"> <input  type="text" id="namefield" placeholder="Name" value="{{persondata.first_name}}"></span>
                     </div>
@@ -392,7 +392,7 @@ function print_state(state_id, state_index){
 
                 <div class="form-group" >
 
-                    <label for="lnamefield" class="control-label col-sm-2"> Last Name</label>
+                    <label for="lnamefield" class="control-label col-sm-2">{% trans "Last Name" %}</label>
                     <div class="col-sm-10"style="padding-right:0px;">
                         <span class="spann"><input type="text"  id="lnamefield" placeholder="Name" value="{{persondata.last_name}}"></span>
                     </div>
@@ -402,15 +402,15 @@ function print_state(state_id, state_index){
 
 
                 <div class="form-group">
-                    <label for="genderfield" class="control-label col-sm-2">Gender</label>
+                    <label for="genderfield" class="control-label col-sm-2">{% trans "Gender" %}</label>
                     <div class="col-sm-10"style="padding-right:0px;">
                         <span class="spann"><select id="genderfield">
                             {% if persondata.gender == "Male"%}
-                            <option selected>Male</option>
-                            <option>Female</option>
+                            <option selected>{% trans "Male" %}</option>
+                            <option>{% trans "Female" %}</option>
                             {%else%}
-                            <option>Male</option>
-                            <option selected>Female</option>
+                            <option>{% trans "Male" %}</option>
+                            <option selected>{% trans "Female" %}</option>
                             {% endif %}
 
                         </select>
@@ -422,7 +422,7 @@ function print_state(state_id, state_index){
             <li class="list-group-item">
 
                 <div class="form-group">
-                    <label for="selfintrofield" class="control-label col-sm-2">Self Introduction</label>
+                    <label for="selfintrofield" class="control-label col-sm-2">{% trans "Self Introduction" %}</label>
                     <div class="col-sm-10"style="padding-right:0px;">
                         <span class="spann"><input type="text" id="selfintrofield" placeholder="Text"value="{{persondata.self_introduction}}"></span>
                     </div>
@@ -430,7 +430,7 @@ function print_state(state_id, state_index){
             </li>
             <li class="list-group-item">
                 <div class="form-group">
-                    <label for="country" class="control-label col-sm-2">Country</label>
+                    <label for="country" class="control-label col-sm-2">{% trans "Country" %}</label>
                     <div class="col-sm-10"style="padding-right:0px;">
                         <span class="spann"><select class= "resizeselect" onchange="print_state('state',this.selectedIndex);" id="country" name="country" ></select></span>
                     </div>
@@ -438,7 +438,7 @@ function print_state(state_id, state_index){
             </li>
             <li class="list-group-item">
                 <div class="form-group">
-                <label for="state" class="control-label col-sm-2">State</label>
+                <label for="state" class="control-label col-sm-2">{% trans "State" %}</label>
                 <div class="col-sm-10"style="padding-right:0px;">
                     <span class="spann"><select name="state" id="state"></select></span>
                 </div>
@@ -449,7 +449,7 @@ function print_state(state_id, state_index){
             </li>
             <li class="list-group-item">
                 <div class="form-group">
-                <label for="city" class="control-label col-sm-2">City</label>
+                <label for="city" class="control-label col-sm-2">{% trans "City" %}</label>
                 <div class="col-sm-10"style="padding-right:0px;">
                     <span class="spann"><select name="state" id="city"></select></span>
                 </div>
@@ -459,17 +459,17 @@ function print_state(state_id, state_index){
         </ul>
         <ul class="list-group">
             <li class="list-group-item">
-                <h1><span class="dotted"></span><b style="padding-left:1%;">Education History</b><a href='education-history/{{persondata.id}}'><span class="glyphicon glyphicon-chevron-right pull-right"></span></a></h1>
+                <h1><span class="dotted"></span><b style="padding-left:1%;">{% trans "Education History" %}</b><a href='education-history/{{persondata.id}}'><span class="glyphicon glyphicon-chevron-right pull-right"></span></a></h1>
     </li>
     </ul>
     <ul class="list-group">
             <li class="list-group-item">
-                <h1><span class="dotted"></span><b style="padding-left:1%;">Employment History</b><a href='employment-history/{{persondata.id}}'><span class="glyphicon glyphicon-chevron-right pull-right"></span></a></h1>
+                <h1><span class="dotted"></span><b style="padding-left:1%;">{% trans "Employment History" %}</b><a href='employment-history/{{persondata.id}}'><span class="glyphicon glyphicon-chevron-right pull-right"></span></a></h1>
     </li>
     </ul>
         
   
-  <button type="submit" class="btn btn-default">Save</button>
+  <button type="submit" class="btn btn-default">{% trans "Save" %}</button>
 </form>
 
 <script type = "text/javascript">
