@@ -216,6 +216,7 @@ def removeEducationHistory(person_id, college_name, college_start_date):
         print('Error occured while deleting education history')
         return -1
     return 1
+    
 def removeEducationHistoryUsingID(person_id,education_id):
     education = DirEducationHistory.objects.filter(pk=education_id,person_id = person_id)
     if not education:
@@ -228,6 +229,7 @@ def removeEducationHistoryUsingID(person_id,education_id):
         print('Error occured while deleting education history')
         return -1
     return 1
+    
 def updateEducationHistoryData(person_id, college_name, college_start_date, new_college_name=None, new_college_start_date=None, new_major=None, new_college_end_date=None):
     try:
         education = DirEducationHistory.objects.get(person_id=person_id, college_name=college_name, college_start_date=college_start_date)
@@ -253,6 +255,7 @@ def updateEducationHistoryData(person_id, college_name, college_start_date, new_
         print('Error occured while updating education history data')
         return -1
     return 1
+    
 def updateEducationHistoryDataByID(person_id,education_id,new_college_name=None, new_college_start_date=None, new_major=None, new_college_end_date=None):
     try:
         education = DirEducationHistory.objects.get(person_id=person_id, pk = education_id)
@@ -342,6 +345,7 @@ def updateEmploymentHistoryData(person_id, employer_name, employment_start_date,
         print('Error occured while updating employment history data')
         return -1
     return 1
+    
 def updateEmploymentHistoryDataByID(person_id, employid , new_employer_name=None, new_employment_start_date=None, new_job_title=None, new_employment_end_date=None):
     try:
         employment = DirEmploymentHistory.objects.get(person_id=person_id, id = employid)
