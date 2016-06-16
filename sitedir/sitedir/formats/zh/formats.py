@@ -1,1 +1,1 @@
-
+DATETIME_FORMAT = 'Y年n月j日 fA'
