@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load i18n %}
 <!DOCTYPE html>
 
 <head>
@@ -53,7 +54,7 @@
     <div class="page-heading media">
 
         <div class="media-body">
-            <h4 class="media-heading"style="font-size:1.1em">Employment History</h4>
+            <h4 class="media-heading"style="font-size:1.1em">{% trans "Employment History" %}</h4>
 
         </div>
         {% if editable == 1%}
@@ -76,36 +77,36 @@
             <div class="modal-content">
                 <div class="modal-header page-heading">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 id="modalheading" class="modal-title">Add Employment History</h4>
+                    <h4 id="modalheading" class="modal-title">{% trans "Add Employment History" %}</h4>
                 </div>
                 <div class="modal-body">
                     <form role="form" id="form">{% csrf_token %}
                     <input type="hidden" id="educationid">
                         <div class="form-group">
-                            <label for="cname">Employer:</label>
+                            <label for="cname">{% trans "Employer" %}:</label>
                             <input type="text" class="form-control" id="cname" required >
                         </div>
                         <div class="form-group">
-                            <label for="major">Job Title:</label>
+                            <label for="major">{% trans "Job Title:" %}</label>
                             <input type="text" class="form-control" id="major" required >
                         </div>
                         <div class="form-group">
-                            <label for="startdate">Start Date:</label>
+                            <label for="startdate">{% trans "Start Date" %}:</label>
                             <input class="form-control" type="date" id="startdate" required >
                         </div>
                         <div class="form-group">
-                            <label for="enddate">End Date:</label>
+                            <label for="enddate">{% trans "End Date" %}:</label>
                             <input class="form-control" type="date" id="enddate" required >
                         </div>
                         <div class="form-group">
-                            <label for="studentname">Employee Name:</label>
+                            <label for="studentname">{% trans "Employee Name" %}:</label>
                             <input type="text" class="form-control" id="studentname" required >
                         </div>
 
                     </form>
                 </div>
                 <div class="modal-footer" id="footer">
-                    <button class="btn btn-default" data-dismiss="modal" id="addbutton">Add</button>
+                    <button class="btn btn-default" data-dismiss="modal" id="addbutton">{% trans "Add" %}</button>
                 </div>
             </div>
 
@@ -126,10 +127,10 @@
                             <p id ="id"hidden>{{entry.id}}</p>
                         <h1 class="media-heading" style="font-size:170%;font-weight: bolder;color:#337ab7;"><b id="collegeid">{{entry.employer_name}}</b></h1>
 
-                        <p style="color:#337ab7;font-size:110%;margin-top: 1em;" > Job Title: <span id="majorid">{{entry.job_title}}</span></p>
+                        <p style="color:#337ab7;font-size:110%;margin-top: 1em;" >{% trans "Job Title" %}: <span id="majorid">{{entry.job_title}}</span></p>
                     </div>
                     <div class="media-right"style="white-space:nowrap;font-size:1.09em;color:#337ab7;line-height:2em;">
-                        Employee Name: <span id="studentnameid">{{entry.employee_name}}</span><br>
+                        {% trans "Employee Name" %}: <span id="studentnameid">{{entry.employee_name}}</span><br>
      <span id="startdateid">{{entry.employment_start_date}}</span> - <span id="enddateid">{{entry.employment_end_date}}</span>
     </div>
                 </div>
@@ -143,11 +144,11 @@
         <div class="footer-contents container h-list">
             <a class="h-list-item" href="#">
                 <i class="glyphicon glyphicon-flag fa fa-user"></i>
-                <p>Execute</p>
+                <p>{% trans "Execute" %}</p>
             </a>
             <a class="h-list-item" href="#">
                 <i class="glyphicon glyphicon-user fa fa-user"></i>
-                <p>Profile</p>
+                <p>{% trans "Profile" %}</p>
             </a>
         </div>
     </div>

@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load i18n %}
 <!DOCTYPE html>
 
 <head>
@@ -15,7 +16,7 @@
 
     <div class="header">
         <div class="panel panel-default"style="border:none;margin:0px;">
-            <div class="panel-heading" style="text-align:center;background-color:#0e90d2;border:none;border-radius: 0 !important;"> <span style="color:white;font-size:1.7em;"><b>Team Detail</b></span></div>
+            <div class="panel-heading" style="text-align:center;background-color:#0e90d2;border:none;border-radius: 0 !important;"> <span style="color:white;font-size:1.7em;"><b>{% trans "Team Detail" %}</b></span></div>
             <div class="panel-body" style="padding: 0px;">
             <div class="media" style="padding:2%; background-color:#594f59;border:none;">
                 <div class="media-left">
@@ -28,8 +29,14 @@
                 <div class="media-body">
 
                     <h4 class="media-heading"><b><span style="color:white">{{teamjson.0.team_name}}</span></b></h4>
-
+                    <p><span style="color:white">
+                    {% blocktrans count member_count=teamjson.0.num_team_members %}{{ member_count }} member{% plural %}{{ member_count }} members{% endblocktrans %} | 
+                    {% blocktrans count new_task_count=teamjson.0.num_new_tasks %}{{ new_task_count }} new task{% plural %}{{ new_task_count }} new tasks{% endblocktrans %} | 
+                    {% blocktrans count task_count=teamjson.0.num_total_tasks %}{{ task_count }} total task{% plural %}{{ task_count }} total tasks{% endblocktrans %}
+                    </span></p>
+                    <!--
                     <p><span style="color:white">{{teamjson.0.num_team_members}} member(s) | {{teamjson.0.num_new_tasks}} new task(s) | {{teamjson.0.num_total_tasks}} total task(s)</span></p>
+                    -->
                 </div>
             </div>
         </div>
@@ -38,18 +45,18 @@
     <div class="panel panel-default"style="border:none;margin:0px;">
         <div class="panel-body">
             <a href="/appuser/profile/{{ teamjson.0.leadid}}/">
-       Team Leader: {{teamjson.0.team_leader}}
+       {% trans "Leader" %}: {{teamjson.0.team_leader}}
        </a>
         </div>
     </div>
     <div class="panel panel-default"style="margin:0px;border-radius: 0 !important;border:none;">
-        <div class="panel-heading" style="background-color:#f2f0f2;"><b><span class="glyphicon glyphicon-info-sign" style="color:black;font-weight:"></span> Team Description</b></div>
+        <div class="panel-heading" style="background-color:#f2f0f2;"><b><span class="glyphicon glyphicon-info-sign" style="color:black;font-weight:"></span> {% trans "Description" %}</b></div>
         <div class="panel-body">{{teamjson.0.team_description}}</div>
     </div>
 
 
     <div class="panel panel-default"style="margin:0px;border-radius: 0 !important;border:none;">
-        <div class="panel-heading" style="background-color:#f2f0f2;"><b><span class="glyphicon glyphicon-user" style="color:black"></span> Members</b></div>
+        <div class="panel-heading" style="background-color:#f2f0f2;"><b><span class="glyphicon glyphicon-user" style="color:black"></span> {% trans "Members" %}</b></div>
         <div class="panel-body">
             <ul>
             {%for member in teamjson.0.team_members%}
@@ -67,7 +74,7 @@
 
 
     <div class="panel panel-default" style="margin:0px;border-radius: 0 !important;border:none;">
-        <div class="panel-heading" style="background-color:#f2f0f2;"><b><span class="glyphicon glyphicon-tasks" style="color:black"></span> Tasks</b></div>
+        <div class="panel-heading" style="background-color:#f2f0f2;"><b><span class="glyphicon glyphicon-tasks" style="color:black"></span> {% trans "Tasks" %}</b></div>
         <div class="panel-body">
             <ul class="list-group">
                 <div class="accordion-group">
@@ -103,7 +110,7 @@
 
 
     <footer class="footer">
-        <button style="width: 100%; height:100%;font-size:1.5em;font-weight: bold;" type="button" class="btn btn-info">Join This Team</button>
+        <button style="width: 100%; height:100%;font-size:1.5em;font-weight: bold;" type="button" class="btn btn-info">{% trans "Join This Team" %}</button>
     </footer>
 
 </body>

@@ -1,3 +1,5 @@
+{% load staticfiles %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://7xskcc.com2.z0.glb.clouddn.com/profile.css">
-    <title>Profile</title>
+    <title>{% trans "Profile" %}</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -18,7 +20,7 @@
 </head>
 <body>
 <div class="nav">
-    Personal Profile
+    {% trans "Personal Profile" %}
 </div>
 <header class="header">
     <div class="profile-box">
@@ -34,30 +36,30 @@
         {{ personalprofile.city }}
     </div>
     <div class="profile-setting">
-        <a href="/appuser/profile-settings">setting</a>
+        <a href="/appuser/profile-settings">{% trans "Settings" %}</a>
     </div>
 </header>
 <div class="title-box">
     <span class="dotted"></span>
-    <div class="title">Execution</div>
+    <div class="title">{% trans "Execution" %}s</div>
 </div>
 <div class="box">
     <div class="execution-box">
         <div class="row">
             <div class="col-xs-6 execution-left">
-                <p class="execution-big">Group</p>
+                <p class="execution-big">{% trans "Group" %}</p>
                 <p class="execution-small">{{ personalprofile.team_name }}</p>
             </div>
             <div class="col-xs-6 execution-right">
-                <p class="execution-big">Task</p>
-                <p class="execution-small">total:{{ personalprofile.num_total_tasks }}<em style="padding: 0px 10px;">|</em>doing:0</p>
+                <p class="execution-big">{% trans "Task" %}</p>
+                <p class="execution-small">{% trans "Total" %}:{{ personalprofile.num_total_tasks }}<em style="padding: 0px 10px;">|</em>{% trans "Doing" %}:0</p>
             </div>
         </div>
     </div>
 </div>
 <div class="title-box">
     <span class="dotted"></span>
-    <div class="title">Personal Introductions</div>
+    <div class="title">{% trans "Self Introduction" %}</div>
 </div>
 <div class="box">
     <div class="content">
@@ -66,17 +68,17 @@
 </div>
 <div class="title-box">
     <span class="dotted"></span>
-    <div class="title">Education history</div>
+    <div class="title">{% trans "Education History" %}</div>
 </div>
 {% for edu in personaleducation.0 %}
 <div class="box">
     <div class="list-box">
         <div class="list">
-            <span>Graduate School:</span>
+            <span>{% trans "Graduate School" %}:</span>
             <span class="word-right">{{ edu.college_name }}</span>
         </div>
         <div class="list">
-            <span>Major:</span>
+            <span>{% trans "Major" %}:</span>
             <span class="word-right">{{ edu.major }}</span>
         </div>
     </div>
@@ -84,13 +86,13 @@
 {% endfor %}
 <div class="title-box">
     <span class="dotted"></span>
-    <div class="title">Work Experience</div>
+    <div class="title">{% trans "Work Experience" %}</div>
 </div>
 {% for employment in personalemployment.0 %}
 <div class="box">
     <div class="list-box">
         <div class="list">
-            <span>Company:</span>
+            <span>{% trans "Company" %}:</span>
             <span class="word-right">{{ employment.employer_name }}</span>
         </div>
     </div>
@@ -100,13 +102,13 @@
     <div class="zhixingli">
         <a href="{% url 'index' %}">
             <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
-            <span class="bottom-text">Execute</span>
+            <span class="bottom-text">{% trans "Execute" %}</span>
         </a>
     </div>
     <div class="my">
         <a href="#">
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-            <span class="bottom-text">Profile</span>
+            <span class="bottom-text">{% trans "Profile" %}</span>
         </a>
     </div>
 </nav>
