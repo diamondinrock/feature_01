@@ -57,7 +57,7 @@
     padding:1%;
     border-radius: 0 !important;
     border-bottom:none;
-    font-size:125%;
+    font-size:135%;
 }
 .list-group{
     margin-bottom: 1%;
@@ -459,12 +459,12 @@ function print_state(state_id, state_index){
         </ul>
         <ul class="list-group">
             <li class="list-group-item">
-                <h1><span class="dotted"></span><b style="padding-left:1%;">Education History</b><a href='education-history/{{ persondata.id}}'><span class="glyphicon glyphicon-chevron-right pull-right"></span></a></h1>
+                <h1><span class="dotted"></span><b style="padding-left:1%;">Education History</b><a href='education-history/{{persondata.id}}'><span class="glyphicon glyphicon-chevron-right pull-right"></span></a></h1>
     </li>
     </ul>
     <ul class="list-group">
             <li class="list-group-item">
-                <h1><span class="dotted"></span><b style="padding-left:1%;">Employment History</b><a href="#Variabler"><span class="glyphicon glyphicon-chevron-right pull-right"></span></a></h1>
+                <h1><span class="dotted"></span><b style="padding-left:1%;">Employment History</b><a href='employment-history/{{persondata.id}}'><span class="glyphicon glyphicon-chevron-right pull-right"></span></a></h1>
     </li>
     </ul>
         
@@ -478,7 +478,7 @@ function print_state(state_id, state_index){
         e.preventDefault();
         $.ajax({
             type:'POST',
-            url:'profile-save',
+            url:'profile-settings',
             data:{
                 introduction:$('#selfintrofield').val(),
                 first_name:$('#namefield').val(),
